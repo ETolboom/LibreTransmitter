@@ -219,7 +219,7 @@
         },
         "pt-BR" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "%@"
           }
         },
@@ -3238,6 +3238,12 @@
             "value" : "Ajustes"
           }
         },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Configurare"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3300,7 +3306,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Connection options"
+            "value" : "Verbindungsoptionen"
           }
         },
         "es" : {
@@ -5257,6 +5263,12 @@
             "value" : "OK"
           }
         },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Realizat"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6035,7 +6047,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "葡萄糖"
+            "value" : "血糖"
           }
         }
       }
@@ -11162,6 +11174,12 @@
             "value" : "Salvar"
           }
         },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Salvează"
+          }
+        },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13091,7 +13109,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "The Bluetooth connection will take up to four minutes before it starts working."
+            "value" : "Es kann bis zu vier Minuten dauern, bis die Bluetooth-Verbindung hergestellt ist."
           }
         },
         "es" : {
@@ -13748,6 +13766,12 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "new",
+            "value" : "U"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "U"
           }
         },

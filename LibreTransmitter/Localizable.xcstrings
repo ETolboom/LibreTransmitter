@@ -1613,7 +1613,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "好"
+            "value" : "OK"
           }
         }
       }
@@ -1845,6 +1845,12 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "new",
+            "value" : "U"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
             "value" : "U"
           }
         },
