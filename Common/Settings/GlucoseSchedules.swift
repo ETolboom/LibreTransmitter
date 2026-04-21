@@ -138,6 +138,19 @@ class GlucoseScheduleList: Codable, CustomStringConvertible {
         }
         return .none
     }
+    
+    public func shouldOverrideDoNotDisturb(_ currentGlucoseInMGDL: Double) -> Bool {
+        for schedule in activeSchedules {
+            let isAlarmingLow = (schedule.lowAlarm != nil && currentGlucoseInMGDL <= schedule.lowAlarm!)
+            let isAlarmingHigh = (schedule.highAlarm != nil && currentGlucoseInMGDL >= schedule.highAlarm!)
+            
+            if (isAlarmingLow || isAlarmingHigh) && (schedule.overrideDoNotDisturb == true) {
+                return true
+            }
+        }
+        
+        return false
+    }
 }
 
 class GlucoseSchedule: Codable, CustomStringConvertible {
@@ -145,6 +158,7 @@ class GlucoseSchedule: Codable, CustomStringConvertible {
     var to: DateComponents?
     var lowAlarm: Double?
     var highAlarm: Double?
+    var overrideDoNotDisturb: Bool?
     var enabled: Bool?
 
     // glucose schedules are stored as standalone datecomponents (i.e. offsets)
@@ -218,6 +232,6 @@ class GlucoseSchedule: Codable, CustomStringConvertible {
     }
 
     var description: String {
-        "(from: \(String(describing: from)), to: \(String(describing: to)), low: \(String(describing: lowAlarm)), high: \(String(describing: highAlarm)), enabled: \(String(describing: enabled)))"
+        "(from: \(String(describing: from)), to: \(String(describing: to)), low: \(String(describing: lowAlarm)), high: \(String(describing: highAlarm)), overrideDoNotDisturb: \(String(describing: overrideDoNotDisturb)), enabled: \(String(describing: enabled)))"
     }
 }

@@ -265,12 +265,6 @@ struct SettingsView: View {
                 SettingsItem(title: "Alarms")
             }
             
-            if NotificationHelper.criticalAlarmsEnabled {
-                NavigationLink(destination: CriticalAlarmsVolumeView()) {
-                    SettingsItem(title: "Critical Alarms volume")
-                }
-            }
-            
             NavigationLink(destination: GlucoseSettingsView()) {
                 SettingsItem(title: "Glucose Settings")
             }

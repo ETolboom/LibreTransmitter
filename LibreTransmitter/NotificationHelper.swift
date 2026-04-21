@@ -30,13 +30,8 @@ public enum NotificationHelper {
         case calibrationOngoing = "com.loopkit.libremiaomiao.calibration-notification"
         case libre2directFinishedSetup = "com.loopkit.libremiaomiao.libre2direct-notification"
     }
-    
-    public static var shouldRequestCriticalPermissions = false
-    
-    // don't touch this please
-    public static var criticalAlarmsEnabled = false
-
-    
+        
+    public private(set) static var criticalAlarmsEnabled = false
 
     private static func vibrate(times: Int=3) {
         guard times >= 0 else {
@@ -52,24 +47,6 @@ public enum NotificationHelper {
     public static func GlucoseUnitIsSupported(unit: HKUnit) -> Bool {
         [HKUnit.milligramsPerDeciliter, HKUnit.millimolesPerLiter].contains(unit)
     }
-
-    private static func requestCriticalNotificationPermissions() {
-        logger.debug("\(#function) called")
-        let center = UNUserNotificationCenter.current()
-        center.requestAuthorization(options: [.badge, .sound, .alert, .criticalAlert]) { (granted, error) in
-            if granted {
-                logger.debug("\(#function) was granted")
-                UNUserNotificationCenter.current().getNotificationSettings { settings in
-                    logPermissions(settings)
-                    criticalAlarmsEnabled = settings.criticalAlertSetting == .enabled
-                }
-            } else {
-                logger.debug("\(#function) failed because of error: \(String(describing: error))")
-            }
-
-        }
-
-    }
     
     private static func logPermissions(_ settings: UNNotificationSettings, caller: String = #function) {
         
@@ -77,19 +54,25 @@ public enum NotificationHelper {
         
     }
 
-    public static func requestNotificationPermissionsIfNeeded() {
-        // We assume loop will request necessary "non-critical" permissions for us
-        // So we are only interested in the "critical" permissions here
-        
+    public static func checkCriticalAlertStatus(completion: @escaping (Bool) -> Void) {
         UNUserNotificationCenter.current().getNotificationSettings { settings in
-            criticalAlarmsEnabled = settings.criticalAlertSetting == .enabled
+            let enabled = (settings.criticalAlertSetting == .enabled)
+            criticalAlarmsEnabled = enabled
             logPermissions(settings)
-            
-            if shouldRequestCriticalPermissions || NotificationHelperOverride.shouldOverrideRequestCriticalPermissions {
-                requestCriticalNotificationPermissions()
+            DispatchQueue.main.async {
+                completion(enabled)
             }
-            
         }
+    }
+
+    public static func requestCriticalAlertPermission(completion: @escaping (Bool) -> Void) {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.badge, .sound, .alert, .criticalAlert]) { _, _ in
+            checkCriticalAlertStatus(completion: completion)
+        }
+    }
+
+    public static func requestNotificationPermissionsIfNeeded() {
+        checkCriticalAlertStatus { _ in }
     }
 
     private static func ensureCanSendNotification(_ completion: @escaping () -> Void ) {
@@ -348,6 +331,7 @@ public extension NotificationHelper {
 
         let alarm = schedules?.getActiveAlarms(glucose.glucoseDouble) ?? .none
         let isSnoozed = GlucoseScheduleList.isSnoozed()
+        let shouldOverrideDoNotDisturb = schedules?.shouldOverrideDoNotDisturb(glucose.glucoseDouble) ?? false
 
         let shouldShowPhoneBattery = UserDefaults.standard.mmShowPhoneBattery
         let transmitterBattery = UserDefaults.standard.mmShowTransmitterBattery && battery != nil ? battery : nil
@@ -359,7 +343,8 @@ public extension NotificationHelper {
         if shouldSend || alarm.isAlarming() {
             sendGlucoseNotification(glucose: glucose, oldValue: oldValue,
                                     glucoseFormatter: glucoseFormatter,
-                                    alarm: alarm, isSnoozed: isSnoozed,
+                                    alarm: alarm, shouldOverrideDoNotDisturb: shouldOverrideDoNotDisturb,
+                                    isSnoozed: isSnoozed,
                                     trend: trend, showPhoneBattery: shouldShowPhoneBattery,
                                     transmitterBattery: transmitterBattery)
         } else {
@@ -371,6 +356,7 @@ public extension NotificationHelper {
     private static func sendGlucoseNotification(glucose: LibreGlucose, oldValue: LibreGlucose?,
                                                 glucoseFormatter: QuantityFormatter,
                                                 alarm: GlucoseScheduleAlarmResult = .none,
+                                                shouldOverrideDoNotDisturb: Bool = false,
                                                 isSnoozed: Bool = false,
                                                 trend: GlucoseTrend?,
                                                 showPhoneBattery: Bool = false,
@@ -387,10 +373,10 @@ public extension NotificationHelper {
             titles.append("Glucose")
         case .low:
             titles.append("LOWALERT!")
-            isCritical = true
+            isCritical = shouldOverrideDoNotDisturb
         case .high:
             titles.append("HIGHALERT!")
-            isCritical = true
+            isCritical = shouldOverrideDoNotDisturb
         }
 
         if isSnoozed {

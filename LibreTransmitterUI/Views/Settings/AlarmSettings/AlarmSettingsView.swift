@@ -8,6 +8,7 @@
 
 import SwiftUI
 import HealthKit
+import LibreTransmitter
 
 private func systemImage(_ name:String) -> some View {
     Image(systemName: name)
@@ -24,6 +25,7 @@ class AlarmScheduleState: ObservableObject, Identifiable, Hashable {
     @Published var lowmgdl: Double = 72
     @Published var highmgdl: Double = 180
     @Published var enabled: Bool? = false
+    @Published var overrideDoNotDisturb: Bool? = false
 
     @Published var alarmDateComponents: AlarmTimeCellExternalState = AlarmTimeCellExternalState()
 
@@ -114,6 +116,7 @@ class AlarmSettingsState: ObservableObject {
             schedule.enabled = storedState.schedules[i].enabled
             schedule.lowmgdl = storedState.schedules[i].lowAlarm ?? -1
             schedule.highmgdl = storedState.schedules[i].highAlarm ?? -1
+            schedule.overrideDoNotDisturb = storedState.schedules[i].overrideDoNotDisturb
 
             schedule.alarmDateComponents.startComponents = storedState.schedules[i].from
             schedule.alarmDateComponents.endComponents  = storedState.schedules[i].to
@@ -138,7 +141,9 @@ class AlarmSettingsState: ObservableObject {
             glucoseSchedule.highAlarm = newStateSchedule.highmgdl
             glucoseSchedule.from = newStateSchedule.alarmDateComponents.startComponents
             glucoseSchedule.to = newStateSchedule.alarmDateComponents.endComponents
-
+            glucoseSchedule.overrideDoNotDisturb = newStateSchedule.overrideDoNotDisturb
+            
+            
             legacyState.schedules.append(glucoseSchedule)
 
         }
@@ -285,6 +290,33 @@ struct AlarmHighRow: View {
     }
 }
 
+struct OverrideDoNotDisturbRow: View {
+    @ObservedObject var schedule: AlarmScheduleState
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            HStack(alignment: .center) {
+                systemImage("bell.badge.fill")
+                    .frame(maxWidth: 50, alignment: .leading)
+                Text("Override Do Not Disturb")
+                    .frame(maxWidth: .infinity, alignment: .leading)
+
+                Toggle("", isOn: Binding<Bool>(
+                    get: { schedule.overrideDoNotDisturb == true },
+                    set: { schedule.overrideDoNotDisturb = $0 }
+                ))
+                .frame(maxWidth: 50, alignment: .trailing)
+            }
+
+            if schedule.overrideDoNotDisturb == true {
+                Text("This alarm will sound even in Do Not Disturb mode")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+            }
+        }
+    }
+}
+
 struct AlarmSettingsView: View {
 
     private(set) var glucoseUnit: HKUnit
@@ -304,6 +336,12 @@ struct AlarmSettingsView: View {
     // for accessing the alarm section
     @State private var requiresAuthentication = Features.alarmSettingsViewRequiresAuthentication
 
+    @State private var criticalAlertsEnabled = false
+
+    private var hasAnyScheduleWithOverride: Bool {
+        alarmState.schedules.contains { $0.overrideDoNotDisturb == true }
+    }
+    
     var body: some View {
         erasedWithKeyboardDismissal(list)
         .alert(item: $presentableStatus) { status in
@@ -318,10 +356,18 @@ struct AlarmSettingsView: View {
                 }
             }
             
+            checkCriticalAlertStatus()
+            
         }
         .disabled(requiresAuthentication ? !authSuccess : false)
     }
     
+    private func checkCriticalAlertStatus() {
+        NotificationHelper.checkCriticalAlertStatus { enabled in
+            criticalAlertsEnabled = enabled
+        }
+    }
+
     func erasedWithKeyboardDismissal(_ view: any View) -> AnyView {
         if #available(iOS 16.0, *) {
             return AnyView(view.scrollDismissesKeyboard(.immediately))
@@ -333,18 +379,26 @@ struct AlarmSettingsView: View {
     @StateObject var errorReporter = FormErrorState()
 
     var list: some View {
-
         List {
+            CriticalAlertsBannerSection(criticalAlertsEnabled: $criticalAlertsEnabled)
+
             ForEach(Array(alarmState.schedules.enumerated()), id: \.1) { i, schedule in
                 Section(header: Text(LocalizedString("Schedule ", comment: "Text describing schedule in alarmsettingsview") +  "\(i+1)")) {
                     AlarmDateRow(schedule: schedule, tag: i, subviewSelection: $subviewSelection)
                     AlarmLowRow(schedule: schedule, glucoseUnit: glucoseUnit, glucoseUnitDesc: glucoseUnitDesc, errorReporter: errorReporter)
                     AlarmHighRow(schedule: schedule, glucoseUnit: glucoseUnit, glucoseUnitDesc: glucoseUnitDesc, errorReporter: errorReporter)
+                    if criticalAlertsEnabled {
+                        OverrideDoNotDisturbRow(schedule: schedule)
+                    }
 
                 }.onTapGesture {
                     self.hideKeyboardPreIos16()
                 }
 
+            }
+            
+            if criticalAlertsEnabled && hasAnyScheduleWithOverride {
+                CriticalAlarmsVolumeSection()
             }
 
             Section {

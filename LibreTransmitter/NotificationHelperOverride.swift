@@ -7,8 +7,8 @@
 //
 
 import Foundation
-enum NotificationHelperOverride {
-    static var shouldOverrideRequestCriticalPermissions : Bool {
+public enum NotificationHelperOverride {
+    public static var shouldOverrideRequestCriticalPermissions : Bool {
         // if you want LibreTransmitter to try upgrading to critical notifications, change this
         false
     }
