@@ -408,10 +408,6 @@ struct AlarmSettingsView: View {
 
     @State private var criticalAlertsEnabled = false
 
-    private var hasAnyScheduleWithOverride: Bool {
-        alarmState.schedules.contains { $0.overrideDoNotDisturb == true }
-    }
-    
     var body: some View {
         erasedWithKeyboardDismissal(list)
         .alert(item: $presentableStatus) { status in
@@ -467,7 +463,7 @@ struct AlarmSettingsView: View {
 
             }
             
-            if criticalAlertsEnabled && hasAnyScheduleWithOverride {
+            if criticalAlertsEnabled {
                 CriticalAlarmsVolumeSection()
             }
 
