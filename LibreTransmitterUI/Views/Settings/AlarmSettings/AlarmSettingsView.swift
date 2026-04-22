@@ -298,7 +298,7 @@ struct OverrideDoNotDisturbRow: View {
             HStack(alignment: .center) {
                 systemImage("bell.badge.fill")
                     .frame(maxWidth: 50, alignment: .leading)
-                Text("Override Do Not Disturb")
+                Text(LocalizedString("Override Do Not Disturb", comment: "Text describing that 'Do Not Disturb' will overriden by this alarm"))
                     .frame(maxWidth: .infinity, alignment: .leading)
 
                 Toggle("", isOn: Binding<Bool>(
@@ -309,7 +309,7 @@ struct OverrideDoNotDisturbRow: View {
             }
 
             if schedule.overrideDoNotDisturb == true {
-                Text("This alarm will sound even in Do Not Disturb mode")
+                Text(LocalizedString("This alarm will sound even in Do Not Disturb mode", comment: "Text that describes that the alarm will sound even in Do Not Disturb mode"))
                     .font(.caption)
                     .foregroundColor(.secondary)
             }

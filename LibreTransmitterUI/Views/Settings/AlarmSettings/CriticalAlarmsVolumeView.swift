@@ -19,7 +19,7 @@ struct CriticalAlertsBannerSection: View {
                 VStack(alignment: .leading, spacing: 8) {
                     Label("Critical Alerts", systemImage: "bell.badge")
                         .font(.headline)
-                    Text("Enable critical alerts so glucose alarms can sound even when Do Not Disturb or silent mode is on.")
+                    Text(LocalizedString("Enable critical alerts so glucose alarms can sound even when Do Not Disturb or silent mode is on.", comment: "Text describing the functionality of the 'Do Not Disturb' toggle"))
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                     Button(action: requestCriticalAlerts) {
@@ -64,7 +64,7 @@ struct CriticalAlarmsVolumeSection: View {
     }
 
     var body: some View {
-        Section(header: Text("Critical alarm volume"), footer: Text("Critical alarms will always be sent with volume at minimum 60%")) {
+        Section(header: Text(LocalizedString("Critical alarm volume", comment: "Header describing the volume of the critical alerts")), footer: Text(LocalizedString("Critical alarms will always be sent with volume at minimum 60%", comment: "Text describing that critical alerts are sent at a minimum volume of 60%"))) {
             Slider(
                 value: $mmCriticalAlarmsVolume,
                 in: 60...100,
