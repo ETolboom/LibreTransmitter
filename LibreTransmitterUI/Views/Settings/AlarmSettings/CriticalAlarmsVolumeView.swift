@@ -44,7 +44,7 @@ struct CriticalAlertsBannerSection: View {
             if !enabled {
                 presentableStatus = StatusMessage(
                     title: "Could Not Enable Critical Alerts",
-                    message: "Critical alerts could not be enabled. Make sure your app is built with the critical alerts entitlement and that your provisioning profile supports it."
+                    message: "Critical alerts were not enabled. If you denied the permission prompt, you can enable them in iOS Settings > Notifications for this app. If this is a development build, also make sure the app has the critical alerts entitlement and that the provisioning profile supports it."
                 )
             }
         }
