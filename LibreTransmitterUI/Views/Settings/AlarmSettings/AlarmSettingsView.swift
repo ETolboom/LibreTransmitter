@@ -317,6 +317,76 @@ struct OverrideDoNotDisturbRow: View {
     }
 }
 
+struct CriticalAlertsBannerSection: View {
+    @Binding var criticalAlertsEnabled: Bool
+    @State private var presentableStatus: StatusMessage?
+
+    var body: some View {
+        if NotificationHelperOverride.shouldOverrideRequestCriticalPermissions && !criticalAlertsEnabled {
+            Section {
+                VStack(alignment: .leading, spacing: 8) {
+                    Label(LocalizedString("Critical Alerts", comment: "Title for the critical alerts banner"), systemImage: "bell.badge")
+                        .font(.headline)
+                    Text(LocalizedString("Enable critical alerts so glucose alarms can sound even when Do Not Disturb or silent mode is on.", comment: "Text describing the functionality of the 'Do Not Disturb' toggle"))
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+                    Button(action: requestCriticalAlerts) {
+                        Text(LocalizedString("Enable Critical Alerts", comment: "Button text to request critical alert permissions"))
+                            .frame(maxWidth: .infinity)
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .tint(.orange)
+                    .padding(.top, 4)
+                }
+                .padding(.vertical, 4)
+            }
+            .alert(item: $presentableStatus) { status in
+                Alert(title: Text(status.title), message: Text(status.message), dismissButton: .default(Text(LocalizedString("Got it!", comment: "Dismiss button for critical alerts permission alert"))))
+            }
+        }
+    }
+
+    private func requestCriticalAlerts() {
+        NotificationHelper.requestCriticalAlertPermission { enabled in
+            criticalAlertsEnabled = enabled
+            if !enabled {
+                presentableStatus = StatusMessage(
+                    title: LocalizedString("Could Not Enable Critical Alerts", comment: "Alert title when critical alert permission was not granted"),
+                    message: LocalizedString("Critical alerts were not enabled. If you denied the permission prompt, you can enable them in iOS Settings > Notifications for this app. If this is a development build, also make sure the app has the critical alerts entitlement and that the provisioning profile supports it.", comment: "Alert message explaining how to enable critical alerts if permission was denied")
+                )
+            }
+        }
+    }
+}
+
+struct CriticalAlarmsVolumeSection: View {
+    private enum Key: String {
+        case mmCriticalAlarmsVolume = "com.loopkit.libreCriticalAlarmsVolume"
+    }
+
+    @AppStorage(Key.mmCriticalAlarmsVolume.rawValue) var mmCriticalAlarmsVolume: Double = 60
+    @State private var isEditing = false
+
+    private var intVolume: Int {
+        Int(mmCriticalAlarmsVolume)
+    }
+
+    var body: some View {
+        Section(header: Text(LocalizedString("Critical alarm volume", comment: "Header describing the volume of the critical alerts")), footer: Text(LocalizedString("Critical alarms will always be sent with volume at minimum 60%", comment: "Text describing that critical alerts are sent at a minimum volume of 60%"))) {
+            Slider(
+                value: $mmCriticalAlarmsVolume,
+                in: 60...100,
+                step: 5,
+                onEditingChanged: { editing in
+                    isEditing = editing
+                }
+            )
+            Text("\(intVolume)%")
+                .foregroundColor(isEditing ? .red : .blue)
+        }
+    }
+}
+
 struct AlarmSettingsView: View {
 
     private(set) var glucoseUnit: HKUnit
