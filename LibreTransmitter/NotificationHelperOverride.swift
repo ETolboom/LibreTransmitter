@@ -9,7 +9,8 @@
 import Foundation
 public enum NotificationHelperOverride {
     public static var shouldOverrideRequestCriticalPermissions : Bool {
-        // if you want LibreTransmitter to try upgrading to critical notifications, change this
+        // if you want LibreTransmitter to override whether it shows the UI/banner for
+        // the critical notification permissions flow, change this
         false
     }
 }
