@@ -648,7 +648,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Activează și termină încălzirea unui senzor nou cu o altă aplicație sau cititor fizic."
+            "value" : "Activați și finalizați încălzirea unui senzor nou cu o altă aplicație sau cu un cititor fizic."
           }
         },
         "ru" : {
@@ -1076,7 +1076,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Adaugă o mulțime de date la Raportul de probleme "
+            "value" : "Adăugați o mulțime de date la Raportul de probleme "
           }
         },
         "ru" : {
@@ -1218,7 +1218,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Adaugă bateria transmițătorului"
+            "value" : "Adăugați bateria transmițătorului"
           }
         },
         "ru" : {
@@ -2230,7 +2230,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Completare din istoric"
+            "value" : "Completare în urmă din istoric"
           }
         },
         "ru" : {
@@ -2373,7 +2373,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Opțiuni de umplere"
+            "value" : "Opțiuni completare în urmă"
           }
         },
         "ru" : {
@@ -2961,7 +2961,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Renunță"
+            "value" : "Anulați"
           }
         },
         "ru" : {
@@ -3682,7 +3682,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Volum critic al alarmei"
+            "value" : "Volum critic alarmă"
           }
         },
         "ru" : {
@@ -4409,7 +4409,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Opțiuni de depanare"
+            "value" : "Opțiuni depanare"
           }
         },
         "ru" : {
@@ -4844,7 +4844,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Informații despre dispozitiv"
+            "value" : "Informații dispozitiv"
           }
         },
         "ru" : {
@@ -4987,7 +4987,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Deconectați și continuați configurarea"
+            "value" : "Deconectați & continuați configurarea"
           }
         },
         "ru" : {
@@ -6148,7 +6148,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vizibilitatea notificărilor privind glicemia"
+            "value" : "Vizibilitate notificare glicemie"
           }
         },
         "ru" : {
@@ -9016,7 +9016,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Majoritatea senzorilor Libre 1 și Libre 2 sunt suportați, cu excepția Libre 2 din America de Nord; consultați readme.md pentru detalii."
+            "value" : "Majoritatea senzorilor Libre 1 și Libre 2 sunt acceptați, cu excepția Libre 2 din America de Nord; consultați readme.md pentru detalii."
           }
         },
         "ru" : {
@@ -9158,7 +9158,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Configurarea Dispozitiv Nou"
+            "value" : "Configurare Dispozitiv Nou"
           }
         },
         "ru" : {
@@ -9885,7 +9885,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Asociază senzor"
+            "value" : "Asociați senzor"
           }
         },
         "ru" : {
@@ -10327,7 +10327,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Întrerupeți alarmele de glicemie"
+            "value" : "Întrerupeți alarme glicemie"
           }
         },
         "ru" : {
@@ -11177,7 +11177,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Salvează"
+            "value" : "Salvați"
           }
         },
         "ru" : {
@@ -11748,7 +11748,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Schimbarea senzorului"
+            "value" : "Schimbare senzor"
           }
         },
         "ru" : {
@@ -12460,7 +12460,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Seria senzorului"
+            "value" : "Serie senzor"
           }
         },
         "ru" : {
@@ -12746,7 +12746,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Starea senzorului"
+            "value" : "Stare senzor"
           }
         },
         "ru" : {
@@ -13187,7 +13187,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Conexiunea Bluetooth va dura până la patru minute înainte de a începe să funcționeze."
+            "value" : "Conexiunea Bluetooth va lua până la patru minute înainte de a începe să funcționeze."
           }
         },
         "ru" : {
