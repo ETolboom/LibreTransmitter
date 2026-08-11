@@ -552,6 +552,9 @@
         }
       }
     },
+    "5-point average" : {
+      "comment" : "Glucose smoothing algorithm: 5-point moving average"
+    },
     "Activate and finish warming up a new sensor with another app or physical reader." : {
       "comment" : "Label text for step 1 of AuthView",
       "localizations" : {
@@ -6337,6 +6340,9 @@
         }
       }
     },
+    "Glucose Smoothing" : {
+      "comment" : "Label for glucose smoothing algorithm picker"
+    },
     "Got it!" : {
       "localizations" : {
         "ar" : {
@@ -7049,6 +7055,9 @@
           }
         }
       }
+    },
+    "Kalman filter" : {
+      "comment" : "Glucose smoothing algorithm: Kalman filter"
     },
     "Keep phone unlocked and your Loop app in the foreground." : {
       "comment" : "Label text for step 3 of libre2 setup",
@@ -9347,6 +9356,9 @@
           }
         }
       }
+    },
+    "None" : {
+      "comment" : "Glucose smoothing algorithm: none"
     },
     "Notification" : {
       "localizations" : {
@@ -12949,6 +12961,12 @@
         }
       }
     },
+    "Smoothing" : {
+      "comment" : "Text describing header for smoothing options in glucosesettingsview"
+    },
+    "Smooths glucose trend values to reduce sensor noise. \"None\" is most responsive to rapid changes but noisiest; \"Kalman filter\" aims to be responsive with less noise than a plain average." : {
+      "comment" : "Text describing the glucose smoothing algorithm options"
+    },
     "Strength" : {
       "localizations" : {
         "ar" : {
@@ -14844,5 +14862,5 @@
       }
     }
   },
-  "version" : "1.0"
+  "version" : "1.1"
 }

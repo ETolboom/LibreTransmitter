@@ -125,7 +125,11 @@ extension LibreGlucose {
         return arr
     }
 
-    static func fromTrendMeasurements(_ measurements: [Measurement], nativeCalibrationData: SensorData.CalibrationInfo) -> [LibreGlucose] {
+    static func fromTrendMeasurements(
+        _ measurements: [Measurement],
+        nativeCalibrationData: SensorData.CalibrationInfo,
+        smoothing: GlucoseSmoothingStrategy = .boxcar5
+    ) -> [LibreGlucose] {
         var arr = [LibreGlucose]()
 
         var shouldSmoothGlucose = true
@@ -152,14 +156,43 @@ extension LibreGlucose {
             }
         }
 
-        if shouldSmoothGlucose {
-            arr = CalculateSmothedData5Points(origtrends: arr)
-        } else {
+        guard shouldSmoothGlucose else {
             for i in 0 ..< arr.count {
                 arr[i].glucoseDouble = arr[i].unsmoothedGlucose
+            }
+            return arr
+        }
+
+        switch smoothing {
+        case .off:
+            for i in 0 ..< arr.count {
+                arr[i].glucoseDouble = arr[i].unsmoothedGlucose
+            }
+        case .boxcar5:
+            arr = CalculateSmothedData5Points(origtrends: arr)
+        case .kalman(let filter, let sinceDate):
+            // The Kalman filter is stateful and sequential, so samples must be fed
+            // oldest-first regardless of the order the caller passed them in.
+            let ascending = arr.enumerated().sorted { $0.element.timestamp < $1.element.timestamp }
+            for (index, glucose) in ascending {
+                if let sinceDate, glucose.timestamp <= sinceDate {
+                    // Already fed to the filter in a previous call (the BLE path
+                    // re-delivers overlapping samples across calls) -- still needs a
+                    // displayable value, but must not be re-fed to the filter.
+                    arr[index].glucoseDouble = glucose.unsmoothedGlucose
+                } else {
+                    let output = filter.update(measurement: glucose.unsmoothedGlucose, at: glucose.timestamp)
+                    arr[index].glucoseDouble = output.level
+                }
             }
         }
 
         return arr
     }
+}
+
+enum GlucoseSmoothingStrategy {
+    case off
+    case boxcar5
+    case kalman(filter: GlucoseKalmanFilter, sinceDate: Date?)
 }

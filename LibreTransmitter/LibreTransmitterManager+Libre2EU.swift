@@ -78,7 +78,22 @@ extension LibreTransmitterManagerV3 {
 
         let sortedTrends = bleData.trend.sorted { $0.date > $1.date}
 
-        let glucose = LibreGlucose.fromTrendMeasurements(sortedTrends, nativeCalibrationData: calibrationData)
+        let smoothing: GlucoseSmoothingStrategy
+        switch UserDefaults.standard.glucoseSmoothingAlgorithm {
+        case .none:
+            smoothing = .off
+        case .boxcar5:
+            smoothing = .boxcar5
+        case .kalman:
+            // Features.useKalmanSmoothing is a maintainer-only emergency rollback:
+            // even if the user has selected Kalman in settings, flipping this build
+            // flag falls everyone back to the boxcar without needing a settings change.
+            smoothing = Features.useKalmanSmoothing
+                ? .kalman(filter: glucoseKalmanFilter, sinceDate: lastKalmanFilteredDate)
+                : .boxcar5
+        }
+        let glucose = LibreGlucose.fromTrendMeasurements(sortedTrends, nativeCalibrationData: calibrationData, smoothing: smoothing)
+        lastKalmanFilteredDate = sortedTrends.map(\.date).max() ?? lastKalmanFilteredDate
 
         var newGlucose : [NewGlucoseSample] = glucosesToSamplesFilter(glucose, startDate: getStartDateForFilter())
         // For libre2 bluetooth we do need all trend elements to calculate trendarrow,

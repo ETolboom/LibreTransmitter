@@ -219,6 +219,14 @@ public extension Libre2 {
     typealias LibreBLEResponse = (age: Int, trend: [Measurement], history: [Measurement], crcVerified: Bool)
     // swiftlint:enable all
 
+    /// `age` and `idValue` are both expressed on the sensor's own minute counter, so
+    /// `age - idValue` is the true number of minutes this sample is behind "now" --
+    /// unlike a raw loop index, which only coincidentally correlates with true age
+    /// and assumes (incorrectly) uniform 1-minute spacing between trend samples.
+    static func computeTimestamp(age: Int, idValue: Int, now: Date = Date()) -> Date {
+        now.addingTimeInterval(Double(-60 * (age - idValue)))
+    }
+
     static func parseBLEData(_ data: Data) -> LibreBLEResponse {
         var measurementTrend: [Measurement] = []
         var measurementHistory: [Measurement] = []
@@ -254,7 +262,7 @@ public extension Libre2 {
                 idValue = ((idValue - delay) / 15) * 15 - 15 * (i - 7)
             }
 
-            let timeStamp = Date().addingTimeInterval(Double(-60 * i))
+            let timeStamp = computeTimestamp(age: age, idValue: idValue)
             let measurementFactory = Measurement(date: timeStamp, rawGlucose: Int(rawSensorValue), rawTemperature: rawTemperature, rawTemperatureAdjustment: rawTemperatureAdjustment, idValue: idValue)
 
             if i < 7 {

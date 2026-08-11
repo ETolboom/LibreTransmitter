@@ -128,7 +128,10 @@ open class LibreTransmitterManagerV3: CGMManager, LibreTransmitterDelegate {
         logDeviceCommunication("New sensor \(sensorId) discovered, activated at \(activatedAt)", type: .connection)
         
         logger.debug("\(#function) sensorchange detected")
-            
+
+        glucoseKalmanFilter.reset()
+        lastKalmanFilteredDate = nil
+
         let event = PersistedCgmEvent(
                         date: activatedAt,
                         type: .sensorStart,
@@ -175,6 +178,13 @@ open class LibreTransmitterManagerV3: CGMManager, LibreTransmitterDelegate {
     public internal(set) var alarmStatus = AlarmStatus()
 
     internal var latestPrediction: LibreGlucose?
+
+    // Kalman-filter smoothing state for the BLE Direct trend path, persists for the
+    // lifetime of the current sensor session. Reset on sensor change and disconnect.
+    lazy var glucoseKalmanFilter = GlucoseKalmanFilter()
+    // High-water mark to avoid re-feeding samples the BLE path re-delivers across calls
+    // (Libre2DirectTransmitter buffers and re-merges recent trend points) into the filter.
+    var lastKalmanFilteredDate: Date?
 
     public var latestBackfill: LibreGlucose? {
         willSet(newValue) {
@@ -282,6 +292,8 @@ open class LibreTransmitterManagerV3: CGMManager, LibreTransmitterDelegate {
         proxy = nil
         lastConnected = nil
         lastDirectUpdate = nil
+        glucoseKalmanFilter.reset()
+        lastKalmanFilteredDate = nil
     }
     
     open func establishProxy() {

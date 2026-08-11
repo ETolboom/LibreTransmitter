@@ -1,6 +1,9 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "5-point average" : {
+      "comment" : "Glucose smoothing algorithm: 5-point moving average"
+    },
     "Could not decrypt sensor contents" : {
       "comment" : "error description for PairingError.decryptionError",
       "localizations" : {
@@ -1014,6 +1017,9 @@
         }
       }
     },
+    "Kalman filter" : {
+      "comment" : "Glucose smoothing algorithm: Kalman filter"
+    },
     "mg/dL" : {
       "comment" : "The short unit display string for milligrams of glucose per decilter",
       "localizations" : {
@@ -1455,6 +1461,9 @@
           }
         }
       }
+    },
+    "None" : {
+      "comment" : "Glucose smoothing algorithm: none"
     },
     "OK" : {
       "comment" : "Sensor state description for the valid state",

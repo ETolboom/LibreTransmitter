@@ -19,6 +19,11 @@ public final class Features {
     
     static public var allowsEditingFactoryCalibrationData = false
     static public var allowOneMinuteReadings = false
+
+    // Emergency rollback switch: when true, glucose smoothing (if enabled via the
+    // user-facing toggle) uses the Kalman filter; when false, falls back to the
+    // older 5-point boxcar average. Not exposed in the UI -- flip at build time only.
+    static public var useKalmanSmoothing = true
     
     // Uses Vibration through apples audio api for glucose alarms. This could be considered an api abuse from apple's standpoint;
     // since apis invoked for this feature are meant for audio streaming apps.
