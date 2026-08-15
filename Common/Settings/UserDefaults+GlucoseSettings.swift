@@ -30,6 +30,7 @@ extension UserDefaults {
         case mmSyncToNS = "com.loopkit.libreSyncToNs"
         case mmBackfillFromHistory = "com.loopkit.libreBackfillFromHistory"
         case glucoseSmoothingAlgorithm = "com.loopkit.libreGlucoseSmoothingAlgorithm"
+        case logSmoothingComparison = "com.loopkit.libreLogSmoothingComparison"
 
     }
 
@@ -57,6 +58,15 @@ extension UserDefaults {
         }
         set {
             set(newValue.rawValue, forKey: Key.glucoseSmoothingAlgorithm.rawValue)
+        }
+    }
+
+    var logSmoothingComparison: Bool {
+        get {
+             optionalBool(forKey: Key.logSmoothingComparison.rawValue) ?? false
+        }
+        set {
+            set(newValue, forKey: Key.logSmoothingComparison.rawValue)
         }
     }
 

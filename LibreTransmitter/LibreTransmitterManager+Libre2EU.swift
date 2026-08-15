@@ -78,6 +78,10 @@ extension LibreTransmitterManagerV3 {
 
         let sortedTrends = bleData.trend.sorted { $0.date > $1.date}
 
+        if UserDefaults.standard.logSmoothingComparison {
+            GlucoseSmoothingCSVLogger.shared.log(sortedTrends: sortedTrends, calibrationData: calibrationData)
+        }
+
         let smoothing: GlucoseSmoothingStrategy
         switch UserDefaults.standard.glucoseSmoothingAlgorithm {
         case .none:

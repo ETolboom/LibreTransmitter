@@ -131,6 +131,7 @@ open class LibreTransmitterManagerV3: CGMManager, LibreTransmitterDelegate {
 
         glucoseKalmanFilter.reset()
         lastKalmanFilteredDate = nil
+        GlucoseSmoothingCSVLogger.shared.reset()
 
         let event = PersistedCgmEvent(
                         date: activatedAt,
@@ -294,6 +295,7 @@ open class LibreTransmitterManagerV3: CGMManager, LibreTransmitterDelegate {
         lastDirectUpdate = nil
         glucoseKalmanFilter.reset()
         lastKalmanFilteredDate = nil
+        GlucoseSmoothingCSVLogger.shared.reset()
     }
     
     open func establishProxy() {

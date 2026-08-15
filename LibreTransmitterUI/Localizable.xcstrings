@@ -12967,6 +12967,21 @@
     "Smooths glucose trend values to reduce sensor noise. \"None\" is most responsive to rapid changes but noisiest; \"Kalman filter\" aims to be responsive with less noise than a plain average." : {
       "comment" : "Text describing the glucose smoothing algorithm options"
     },
+    "Smoothing comparison log" : {
+      "comment" : "Text describing header for smoothing comparison log options in glucosesettingsview"
+    },
+    "Logs what each smoothing option (None, 5-point average, Kalman filter) would have produced for every reading, as a CSV, regardless of which one is selected above. Useful for comparing algorithms; has no effect on the value actually used for dosing." : {
+      "comment" : "Text describing the smoothing comparison CSV log"
+    },
+    "Log smoothing comparison" : {
+      "comment" : "Toggle to enable/disable the smoothing comparison CSV log"
+    },
+    "Share smoothing log" : {
+      "comment" : "Button to share the smoothing comparison CSV log"
+    },
+    "Clear smoothing log" : {
+      "comment" : "Button to delete the smoothing comparison CSV log"
+    },
     "Strength" : {
       "localizations" : {
         "ar" : {

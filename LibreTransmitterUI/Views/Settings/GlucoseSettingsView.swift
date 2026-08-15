@@ -19,6 +19,9 @@ struct GlucoseSettingsView: View {
     @AppStorage("com.loopkit.libreBackfillFromHistory") var mmBackfillFromHistory: Bool = true
     @AppStorage("com.loopkit.libreshouldPersistSensorData") var shouldPersistSensorData: Bool = false
     @AppStorage("com.loopkit.libreGlucoseSmoothingAlgorithm") var glucoseSmoothingAlgorithm: GlucoseSmoothingAlgorithm = .kalman
+    @AppStorage("com.loopkit.libreLogSmoothingComparison") var logSmoothingComparison: Bool = false
+
+    @State private var showSmoothingLogShareSheet = false
 
     @State private var authSuccess = false
     
@@ -52,7 +55,18 @@ struct GlucoseSettingsView: View {
                         }
                     }
             }
-            
+            Section(header: Text(LocalizedString("Smoothing comparison log", comment: "Text describing header for smoothing comparison log options in glucosesettingsview")), footer: Text(LocalizedString("Logs what each smoothing option (None, 5-point average, Kalman filter) would have produced for every reading, as a CSV, regardless of which one is selected above. Useful for comparing algorithms; has no effect on the value actually used for dosing.", comment: "Text describing the smoothing comparison CSV log"))) {
+                Toggle(LocalizedString("Log smoothing comparison", comment: "Toggle to enable/disable the smoothing comparison CSV log"), isOn: $logSmoothingComparison)
+                Button(LocalizedString("Share smoothing log", comment: "Button to share the smoothing comparison CSV log")) {
+                    showSmoothingLogShareSheet = true
+                }
+                .disabled(!FileManager.default.fileExists(atPath: GlucoseSmoothingCSVLogger.fileURL.path))
+                Button(LocalizedString("Clear smoothing log", comment: "Button to delete the smoothing comparison CSV log"), role: .destructive) {
+                    GlucoseSmoothingCSVLogger.shared.clearLog()
+                }
+                .disabled(!FileManager.default.fileExists(atPath: GlucoseSmoothingCSVLogger.fileURL.path))
+            }
+
         }
         .onAppear {
             if requiresAuthentication && !authSuccess {
@@ -68,9 +82,22 @@ struct GlucoseSettingsView: View {
             Alert(title: Text(status.title), message: Text(status.message), dismissButton: .default(Text("Got it!")))
         }
         .navigationBarTitle("Glucose Settings")
-        
+        .sheet(isPresented: $showSmoothingLogShareSheet) {
+            SmoothingLogShareSheet(activityItems: [GlucoseSmoothingCSVLogger.fileURL])
+        }
+
     }
 
+}
+
+private struct SmoothingLogShareSheet: UIViewControllerRepresentable {
+    let activityItems: [Any]
+
+    func makeUIViewController(context _: Context) -> UIActivityViewController {
+        UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
+    }
+
+    func updateUIViewController(_: UIActivityViewController, context _: Context) {}
 }
 
 struct GlucoseSettingsView_Previews: PreviewProvider {

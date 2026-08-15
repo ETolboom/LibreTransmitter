@@ -77,6 +77,7 @@
 		27850DBE25672F530020D109 /* LibreError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27850BA0256724EF0020D109 /* LibreError.swift */; };
 		27850DC425672F640020D109 /* GlucoseSmoothing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27850BA5256724F00020D109 /* GlucoseSmoothing.swift */; };
 		F6563656135589B04429BE10 /* GlucoseKalmanFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6EF5863AE80B6825F061F6E /* GlucoseKalmanFilter.swift */; };
+		FEC356BCDEF3A55F186E992B /* GlucoseSmoothingCSVLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46761DA5DAE42A4DD27CE7A1 /* GlucoseSmoothingCSVLogger.swift */; };
 		27850DC525672F640020D109 /* GlucoseFromRaw.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27850BA4256724EF0020D109 /* GlucoseFromRaw.swift */; };
 		27850DCB25672F770020D109 /* SensorSerialNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27850BAC256724F10020D109 /* SensorSerialNumber.swift */; };
 		27850DCC25672F770020D109 /* Measurement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27850BA8256724F00020D109 /* Measurement.swift */; };
@@ -230,6 +231,7 @@
 		27850BA4256724EF0020D109 /* GlucoseFromRaw.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlucoseFromRaw.swift; sourceTree = "<group>"; };
 		27850BA5256724F00020D109 /* GlucoseSmoothing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlucoseSmoothing.swift; sourceTree = "<group>"; };
 		A6EF5863AE80B6825F061F6E /* GlucoseKalmanFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlucoseKalmanFilter.swift; sourceTree = "<group>"; };
+		46761DA5DAE42A4DD27CE7A1 /* GlucoseSmoothingCSVLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlucoseSmoothingCSVLogger.swift; sourceTree = "<group>"; };
 		27850BA6256724F00020D109 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		27850BA8256724F00020D109 /* Measurement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Measurement.swift; sourceTree = "<group>"; };
 		27850BA9256724F00020D109 /* PreLibre2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreLibre2.swift; sourceTree = "<group>"; };
@@ -427,6 +429,7 @@
 			children = (
 				27850BA5256724F00020D109 /* GlucoseSmoothing.swift */,
 				A6EF5863AE80B6825F061F6E /* GlucoseKalmanFilter.swift */,
+				46761DA5DAE42A4DD27CE7A1 /* GlucoseSmoothingCSVLogger.swift */,
 				27850BA4256724EF0020D109 /* GlucoseFromRaw.swift */,
 				27850BA6256724F00020D109 /* .gitignore */,
 			);
@@ -990,6 +993,7 @@
 				27DD8F26268FA75A00649010 /* SensorInfo.swift in Sources */,
 				27850DC425672F640020D109 /* GlucoseSmoothing.swift in Sources */,
 				F6563656135589B04429BE10 /* GlucoseKalmanFilter.swift in Sources */,
+				FEC356BCDEF3A55F186E992B /* GlucoseSmoothingCSVLogger.swift in Sources */,
 				27F93B2A2816B7FF00EE39A7 /* LibreTransmitterManager+Libre2EU.swift in Sources */,
 				27850DCF25672F780020D109 /* CRC.swift in Sources */,
 				2764E86126FC6DC10016A585 /* Features.swift in Sources */,
