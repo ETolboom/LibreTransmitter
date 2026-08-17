@@ -13,10 +13,7 @@ import CoreNFC
 public final class Features {
 
     static public var logSubsystem = "com.loopkit.libre"
-    
-    static public var glucoseSettingsRequireAuthentication = false
-    static public var alarmSettingsViewRequiresAuthentication = false
-    
+
     static public var allowsEditingFactoryCalibrationData = false
     static public var allowOneMinuteReadings = false
 
