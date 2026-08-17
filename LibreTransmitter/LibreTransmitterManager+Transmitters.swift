@@ -135,6 +135,12 @@ extension LibreTransmitterManagerV3 {
 
             // must be inside this handler as setobservables "depend" on latestbackfill
             self.setObservables(sensorData: sensorData, bleData: nil, metaData: nil)
+            // setObservables() updates sensorInfoObservable asynchronously on the main
+            // queue; enqueue evaluateAlerts() the same way so it's guaranteed to run
+            // after those updates land (GCD preserves submission order on a serial queue).
+            DispatchQueue.main.async {
+                self.evaluateAlerts()
+            }
 
             self.logger.debug("handleGoodReading returned with \(newGlucoses.count) entries")
             self.delegateQueue.async {

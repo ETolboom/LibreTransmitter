@@ -56,7 +56,7 @@ open class LibreTransmitterManagerV3: CGMManager, LibreTransmitterDelegate {
 
     public var sensorLifecycle: LibreSensorLifecycle {
         LibreSensorLifecycle.compute(
-            sensorPaired: hasValidSensorSession,
+            sensorPaired: isDeviceSelected,
             activatedAt: sensorInfoObservable.activatedAt,
             expiresAt: sensorInfoObservable.expiresAt,
             latestReadingAt: latestReadingTimestamp,
@@ -218,8 +218,12 @@ open class LibreTransmitterManagerV3: CGMManager, LibreTransmitterDelegate {
             let oldValue = latestBackfill
 
             defer {
+                // evaluateAlerts() is deliberately not called here: it depends on
+                // sensorInfoObservable's activatedAt/expiresAt, which are only
+                // guaranteed fresh once setObservables() has run for this same
+                // update - callers trigger evaluateAlerts() themselves right after
+                // that call, using data from this same read.
                 latestReadingTimestamp = newValue.startDate
-                evaluateAlerts()
             }
 
             logger.debug("latestBackfill set, newvalue is \(newValue.glucose)")
@@ -248,11 +252,37 @@ open class LibreTransmitterManagerV3: CGMManager, LibreTransmitterDelegate {
 
         self.init()
         logger.debug("LibreTransmitterManager  has run init from rawstate")
-        
+
+        let persisted = LibreCGMManagerState(rawValue: rawState)
+        sensorInfoObservable.activatedAt = persisted.activatedAt
+        sensorInfoObservable.expiresAt = persisted.expiresAt
+        sensorInfoObservable.sensorMaxMinutesWearTime = persisted.sensorMaxMinutesWearTime
+        sensorInfoObservable.sensorSerial = persisted.sensorSerial ?? ""
+        transmitterInfoObservable.sensorType = persisted.sensorType ?? ""
+        latestReadingTimestamp = persisted.latestReadingTimestamp
+        lastConnected = persisted.lastConnected
+        lastPersistedState = persisted
+    }
+
+    /// A stored snapshot of the last state actually handed to
+    /// `cgmManagerDelegate?.cgmManagerDidUpdateState(self)`, so `evaluateAlerts()`
+    /// only notifies the delegate (triggering an app-level persistence save)
+    /// when something persistence-relevant actually changed.
+    var lastPersistedState: LibreCGMManagerState?
+
+    var currentPersistableState: LibreCGMManagerState {
+        LibreCGMManagerState(
+            activatedAt: sensorInfoObservable.activatedAt,
+            sensorMaxMinutesWearTime: sensorInfoObservable.sensorMaxMinutesWearTime,
+            sensorSerial: sensorInfoObservable.sensorSerial.isEmpty ? nil : sensorInfoObservable.sensorSerial,
+            sensorType: transmitterInfoObservable.sensorType.isEmpty ? nil : transmitterInfoObservable.sensorType,
+            latestReadingTimestamp: latestReadingTimestamp,
+            lastConnected: lastConnected
+        )
     }
 
     public var rawState: CGMManager.RawStateValue {
-        [:]
+        currentPersistableState.rawValue
     }
 
     open var localizedTitle: String { "FreeStyle Libre" }
@@ -269,6 +299,8 @@ open class LibreTransmitterManagerV3: CGMManager, LibreTransmitterDelegate {
 
         logger.debug("LibreTransmitterManager will be created now")
 
+        sensorInfoObservable.isPaired = isDeviceSelected
+
         if isDeviceSelected {
             establishProxy()
         }
@@ -283,8 +315,21 @@ open class LibreTransmitterManagerV3: CGMManager, LibreTransmitterDelegate {
         disconnect()
         transmitterInfoObservable = TransmitterInfo()
         sensorInfoObservable = SensorInfo()
+        sensorInfoObservable.isPaired = isDeviceSelected
         glucoseInfoObservable = GlucoseInfo()
-        
+        latestReadingTimestamp = nil
+        lastFault = nil
+        lastKnownSensorState = nil
+        firingAlertConditions = []
+
+        // Make sure the now-cleared state actually gets persisted, so a stale
+        // activatedAt/expiresAt from the previous sensor doesn't get restored
+        // on the next app launch.
+        lastPersistedState = nil
+        let delegate = cgmManagerDelegate
+        delegateQueue.async {
+            delegate?.cgmManagerDidUpdateState(self)
+        }
     }
 
     public func disconnect() {

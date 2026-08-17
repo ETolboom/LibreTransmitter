@@ -49,6 +49,7 @@ public struct SettingsItem: View {
 
 struct SettingsView: View {
     @EnvironmentObject private var displayGlucosePreference: DisplayGlucosePreference
+    @Environment(\.guidanceColors) private var guidanceColors
 
     var longDateFormatter: DateFormatter = ({
         let df = DateFormatter()
@@ -114,20 +115,16 @@ struct SettingsView: View {
                         SettingsItem(title: "Date", detail: longDateFormatter.string(from: date) )
                     }
                 }
-                
+
+                sensorInfoSection
+
                 NavigationLink(destination: deviceInfoSection) {
                     SettingsItem(title: "Device details")
                 }
-                
-                NavigationLink(destination: CalibrationEditView()) {
-                    Button(Features.allowsEditingFactoryCalibrationData ? "Edit calibrations" : "View factory calibrations") {
-                        print("edit calibration clicked")
-                    }
-                }
-                advancedSection
-                sensorChangeSection
+
+                manageSection
                 destructSection
-                
+
             }.listStyle(InsetGroupedListStyle())
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -181,14 +178,19 @@ struct SettingsView: View {
                 if !transmitterInfo.transmitterMacAddress.isEmpty {
                     SettingsItem(title: "Mac", detail: $transmitterInfo.transmitterMacAddress )
                 }
-                
-                SettingsItem(title: "Sensor Type", detail: $transmitterInfo.sensorType )
-                
-                SettingsItem(title: "Sensor Start", detail: sensorInfo.activatedAtString )
-                SettingsItem(title: "Sensor End", detail: sensorInfo.expiresAtString )
             }
         }
         .textSelection(.enabled)
+        .navigationTitle(LocalizedString("Device Info", comment: "Text describing header for device info section"))
+    }
+
+    var sensorInfoSection: some View {
+        Section(header: Text(LocalizedString("Sensor Information", comment: "Text describing header for sensor information section"))) {
+            SettingsItem(title: "Sensor Type", detail: $transmitterInfo.sensorType )
+            SettingsItem(title: "Sensor Serial", detail: $sensorInfo.sensorSerial )
+            SettingsItem(title: "Sensor Start", detail: sensorInfo.activatedAtString )
+            SettingsItem(title: "Sensor End", detail: sensorInfo.expiresAtString )
+        }
     }
 
     private var doneButton: some View {
@@ -197,12 +199,15 @@ struct SettingsView: View {
         })
     }
     
-    var sensorChangeSection: some View {
-        
-        Section {
+    var manageSection: some View {
+        Section(header: Text(LocalizedString("Manage", comment: "Text describing header for manage section"))) {
+            NavigationLink(destination: CalibrationEditView()) {
+                Button(Features.allowsEditingFactoryCalibrationData ? "Edit calibrations" : "View factory calibrations") {
+                    print("edit calibration clicked")
+                }
+            }
+
             NavigationLink(destination: AuthView(completeNotifier: notifyComplete, notifyReset: notifyReset, notifyReconnect: notifyReconnect, pairingService: pairingService, bluetoothSearcher: bluetoothSearcher)) {
-                /*Button("Change Sensor") {
-                }.foregroundColor(.blue)*/
                 SettingsItem(title: "Change Sensor").foregroundColor(.blue)
             }
         }
@@ -236,14 +241,6 @@ struct SettingsView: View {
         }
     }
 
-    var advancedSection: some View {
-        Section(header: Text(LocalizedString("Configuration", comment: "Text describing header for advanced settings section"))) {
-            NavigationLink(destination: GlucoseSettingsView()) {
-                SettingsItem(title: "Glucose Settings")
-            }
-        }
-    }
-    
     private var daysRemaining: Int? {
         if let remaining = sensorInfo.expiresAt?.timeIntervalSinceNow, remaining > .days(1) {
             return Int(remaining.days)
@@ -274,14 +271,6 @@ struct SettingsView: View {
                 // .foregroundColor(viewModel.podOk ? .primary : .secondary)
             Text(units).foregroundColor(.secondary)
         }
-    }
-    
-    var sensorIsExpired : Bool {
-        if let expiresAt = sensorInfo.expiresAt {
-            return expiresAt.timeIntervalSinceNow < 0
-        }
-        
-        return false
     }
     
     var showProgress : Bool {
@@ -347,84 +336,35 @@ struct SettingsView: View {
         }.frame(maxWidth: .infinity)
     }
     
-    var sensorStatusText : String {
-        let ret = sensorInfo.sensorState
-        return ret.isEmpty ? " - " : ret
+    private var isConnected: Bool {
+        ["Connected", "Notifying"].contains(transmitterInfo.connectionState)
     }
-    var sensorStatus: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            Text(LocalizedString("Sensor State", comment: "Text describing Sensor state label in settingsview"))
-                .fontWeight(.heavy)
-                .fixedSize()
-            Text("\(sensorStatusText)")
-                .foregroundColor(.secondary)
-                .textSelection(.enabled)
+
+    var sensorStatusRow: some View {
+        let status = LibreSensorStatusDisplay.compute(lifecycle: sensorInfo.sensorLifecycle, isDeviceSelected: sensorInfo.isPaired, isConnected: isConnected)
+        return HStack(alignment: .top, spacing: 10) {
+            Image(systemName: status.iconName)
+                .foregroundStyle(status.iconColor(guidanceColors))
+            VStack(alignment: .leading, spacing: 2) {
+                status.title.fontWeight(.heavy).foregroundStyle(.primary)
+                status.message.foregroundStyle(.secondary)
+            }
         }
     }
-    
-    var sensorSerialText : String {
-        let ret = sensorInfo.sensorSerial
-        print("got serial: \(ret)")
-        return ret.isEmpty ? " - " : ret
-    }
-    
-    var sensorSerial : some View {
-        VStack(alignment: .leading, spacing: 0) {
-            Text(LocalizedString("Sensor Serial", comment: "Text describing Sensor serial label in settingsview"))
-                // .font(.system(size: 1))
-                .fontWeight(.heavy)
-                .fixedSize()
-            Text("\(sensorSerialText)")
-                .foregroundColor(.secondary)
-                .textSelection(.enabled)
-        }
-    }
-    
+
     var headerSection: some View {
         Section {
             VStack(alignment: .trailing) {
-                
+
                 Spacer()
                 headerImage
-                
+
                 lifecycleProgress
                 Spacer()
-                HStack(alignment: .top) {
-                    sensorStatus
-                    Spacer()
-                    sensorSerial
-                }
-                
-                /*Divider()
-                Text("some faultAction")
-                    .font(Font.footnote.weight(.semibold))
-                    .fixedSize(horizontal: false, vertical: true)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                 */
-                
+
             }
-            if sensorIsExpired {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("Sensor is expired")
-                        .font(Font.subheadline.weight(.bold))
-                    Text("Replace sensor immediately to continue receving glucose values")
-                        .font(Font.footnote.weight(.semibold))
-                }.padding(.vertical, 8)
-            } else if !["Notifying", "Connected"].contains(transmitterInfo.connectionState) || !showProgress {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(LocalizedString("No Connection: ", comment: "Text describing no connection label in settingsview"))
-                        .font(Font.subheadline.weight(.bold))
-                     Text("\(transmitterInfo.connectionState)")
-                        .font(Font.footnote.weight(.semibold))
-                }.padding(.vertical, 8)
-            }
+            sensorStatusRow
         }
     }
 
-}
-
-struct SettingsOverview_Previews: PreviewProvider {
-    static var previews: some View {
-        GlucoseSettingsView()
-    }
 }
