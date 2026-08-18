@@ -84,7 +84,6 @@ extension LibreTransmitterManagerV3 {
             self.countTimesWithoutData &+= 1
         } else {
             self.latestBackfill = glucose.max { $0.startDate < $1.startDate }
-            self.latestPrediction =  self.createBloodSugarPrediction(bleData.trend, calibration: calibrationData)
             self.logger.debug("latestbackfill set to \(self.latestBackfill.debugDescription)")
             self.countTimesWithoutData = 0
         }

@@ -23,7 +23,7 @@ open class LibreTransmitterManagerV3: CGMManager, LibreTransmitterDelegate {
    
     
 
-    public typealias GlucoseArrayWithPrediction = (trends: [LibreGlucose], historical: [LibreGlucose], prediction: [LibreGlucose])
+    public typealias GlucoseReadout = (trends: [LibreGlucose], historical: [LibreGlucose])
     public lazy var logger = Logger(forType: Self.self)
 
     public let isOnboarded = true   // No distinction between created and onboarded
@@ -205,8 +205,6 @@ open class LibreTransmitterManagerV3: CGMManager, LibreTransmitterDelegate {
     }
 
     public var lastConnected: Date?
-
-    internal var latestPrediction: LibreGlucose?
 
     public var latestBackfill: LibreGlucose? {
         willSet(newValue) {
@@ -391,30 +389,6 @@ open class LibreTransmitterManagerV3: CGMManager, LibreTransmitterDelegate {
 // MARK: - Convenience functions
 extension LibreTransmitterManagerV3 {
 
-    internal func createBloodSugarPrediction(_ measurements: [Measurement], calibration: SensorData.CalibrationInfo) -> LibreGlucose? {
-        let allGlucoses = measurements.sorted { $0.date > $1.date }
-
-        // Increase to up to 15 to move closer to real blood sugar
-        // The cost is slightly more noise on consecutive readings
-        let glucosePredictionMinutes: Double = 10
-
-        guard allGlucoses.count > 15 else {
-            logger.info("not creating blood sugar prediction: less data elements than needed (\(allGlucoses.count))")
-            return nil
-        }
-
-        if let predicted = allGlucoses.predictBloodSugar(glucosePredictionMinutes) {
-            let currentBg = predicted.calibratedGlucose(calibrationInfo: calibration)
-            let bgDate = predicted.date.addingTimeInterval(60 * -glucosePredictionMinutes)
-            logger.debug("Predicted glucose (not used) was: \(currentBg)")
-            return LibreGlucose(unsmoothedGlucose: currentBg, glucoseDouble: currentBg, timestamp: bgDate)
-        } else {
-            logger.debug("Tried to predict glucose value but failed!")
-            return nil
-        }
-
-    }
-
     public func setObservables(sensorData: SensorDataProtocol?, bleData: Libre2.LibreBLEResponse?, metaData: LibreTransmitterMetadata?) {
         logger.debug("setObservables called")
         DispatchQueue.main.async {
@@ -532,15 +506,6 @@ extension LibreTransmitterManagerV3 {
                 self.glucoseInfoObservable.glucose = d.quantity
                 self.glucoseInfoObservable.date = d.timestamp
                 self.sensorInfoObservable.activeMeasurementErrors = d.error.filter { $0 != .OK }
-            }
-
-            if let d = self.latestPrediction {
-                self.glucoseInfoObservable.prediction = d.quantity
-                self.glucoseInfoObservable.predictionDate = d.timestamp
-
-            } else {
-                self.glucoseInfoObservable.prediction = nil
-                self.glucoseInfoObservable.predictionDate = nil
             }
         }
     }

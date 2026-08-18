@@ -78,7 +78,7 @@ extension LibreTransmitterManagerV3 {
         
         
 
-        self.handleGoodReading(data: sensorData) { [weak self] error, glucoseArrayWithPrediction in
+        self.handleGoodReading(data: sensorData) { [weak self] error, glucoseReadout in
             guard let self else {
                 print(" handleGoodReading could not lock on self, aborting")
                 return
@@ -91,7 +91,7 @@ extension LibreTransmitterManagerV3 {
                 return
             }
 
-            guard let glucose = glucoseArrayWithPrediction?.trends else {
+            guard let glucose = glucoseReadout?.trends else {
                 self.logger.debug("handleGoodReading returned with no data")
                 self.delegateQueue.async {
                     self.cgmManagerDelegate?.cgmManager(self, hasNew: .noData)
@@ -99,27 +99,25 @@ extension LibreTransmitterManagerV3 {
                 return
             }
 
-            let prediction = glucoseArrayWithPrediction?.prediction
-
             var newGlucoses : [NewGlucoseSample] = []
-            
+
             // Since trends have a spacing of 1 minute between them, we use that to calculate trend arrows
             var trends = self.glucosesToSamplesFilter(glucose, startDate: self.getStartDateForFilter())
-            
+
             // But since Loop only supports 1 glucose reading
             // every 5 minutes, we remove all readings except the newest
             if let newest = trends.first {
                 trends = [newest]
             }
-            
+
             // Historical readings have a spacing of 15 minutes between them,
             // trend arrow calculation doesn't make that much sense
-            if let historical = glucoseArrayWithPrediction?.historical {
+            if let historical = glucoseReadout?.historical {
                 let historical2 = self.glucosesToSamplesFilter(historical, startDate: self.getStartDateForFilter(), calculateTrends: false)
                 if !historical.isEmpty {
                     newGlucoses = historical2
                 }
-                
+
             }
             newGlucoses += trends
 
@@ -130,8 +128,6 @@ extension LibreTransmitterManagerV3 {
                 self.logger.debug("latestbackfill set to \(self.latestBackfill.debugDescription)")
                 self.countTimesWithoutData = 0
             }
-
-            self.latestPrediction = prediction?.first
 
             // must be inside this handler as setobservables "depend" on latestbackfill
             self.setObservables(sensorData: sensorData, bleData: nil, metaData: nil)
@@ -158,17 +154,12 @@ extension LibreTransmitterManagerV3 {
         }
 
     }
-    private func readingToGlucose(_ data: SensorData, calibration: SensorData.CalibrationInfo) -> GlucoseArrayWithPrediction {
+    private func readingToGlucose(_ data: SensorData, calibration: SensorData.CalibrationInfo) -> GlucoseReadout {
 
         var entries: [LibreGlucose] = []
         var historical: [LibreGlucose] = []
-        var prediction: [LibreGlucose] = []
 
         let trends = data.trendMeasurements()
-
-        if let temp = createBloodSugarPrediction(trends, calibration: calibration) {
-            prediction.append(temp)
-        }
 
         entries = LibreGlucose.fromTrendMeasurements(trends, nativeCalibrationData: calibration)
 
@@ -177,10 +168,10 @@ extension LibreTransmitterManagerV3 {
             historical += LibreGlucose.fromHistoryMeasurements(history, nativeCalibrationData: calibration)
         }
 
-        return (trends: entries, historical: historical, prediction: prediction)
+        return (trends: entries, historical: historical)
     }
 
-    public func handleGoodReading(data: SensorData?, _ callback: @escaping (LibreError?, GlucoseArrayWithPrediction?) -> Void) {
+    public func handleGoodReading(data: SensorData?, _ callback: @escaping (LibreError?, GlucoseReadout?) -> Void) {
         // only care about the once per minute readings here, historical data will not be considered
 
         guard let data else {

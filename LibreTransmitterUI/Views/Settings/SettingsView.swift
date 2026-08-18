@@ -109,12 +109,6 @@ struct SettingsView: View {
             List {
                 headerSection
                 measurementSection
-                if let date = glucoseMeasurement.predictionDate, let prediction = glucoseMeasurement.prediction {
-                    Section(header: Text(LocalizedString("Last Blood Sugar prediction", comment: "Text describing header for Blood Sugar prediction section"))) {
-                        SettingsItem(title: "CurrentBG", detail: displayGlucosePreference.format(prediction))
-                        SettingsItem(title: "Date", detail: longDateFormatter.string(from: date) )
-                    }
-                }
 
                 sensorInfoSection
 
