@@ -2563,6 +2563,9 @@
         }
       }
     },
+    "Bridge battery low" : {
+      "comment" : "Title for a warning that the bridge transmitter's battery is low"
+    },
     "Calibration Details" : {
       "localizations" : {
         "ar" : {
@@ -3288,6 +3291,9 @@
         }
       }
     },
+    "Connecting" : {
+      "comment" : "status connecting"
+    },
     "Connection options" : {
       "comment" : "Text describing options for connecting to sensor or transmitter",
       "localizations" : {
@@ -3430,6 +3436,9 @@
           }
         }
       }
+    },
+    "Consider charging your transmitter soon." : {
+      "comment" : "Message for a warning that the bridge transmitter's battery is low"
     },
     "Credentials" : {
       "comment" : "Title of cell to set credentials",
@@ -5454,6 +5463,9 @@
           }
         }
       }
+    },
+    "Establishing a connection to your sensor." : {
+      "comment" : "msg connecting"
     },
     "Fair warning: The sensor will be not be using the manufacturer's algorithm, and some safety mitigations present in the manufacturers algorithm might be missing when you use this." : {
       "comment" : "Label text for step 4 of connection setup",
@@ -8348,6 +8360,9 @@
         }
       }
     },
+    "Manage" : {
+      "comment" : "Text describing header for manage section"
+    },
     "mg/dL" : {
       "comment" : "The short unit display string for milligrams of glucose per decilter",
       "localizations" : {
@@ -9348,6 +9363,9 @@
         }
       }
     },
+    "No Sensor" : {
+      "comment" : "status no sensor"
+    },
     "Notification" : {
       "localizations" : {
         "ar" : {
@@ -9788,6 +9806,9 @@
           }
         }
       }
+    },
+    "Pair a sensor to start receiving readings." : {
+      "comment" : "msg no sensor"
     },
     "Pair Sensor" : {
       "comment" : "Button title for pairing sensor",
@@ -10945,6 +10966,9 @@
         }
       }
     },
+    "Replace\nSensor" : {
+      "comment" : "Status highlight message for a failed sensor"
+    },
     "Replace sensor immediately to continue receving glucose values" : {
       "localizations" : {
         "ar" : {
@@ -11653,6 +11677,18 @@
         }
       }
     },
+    "Sensor\nExpired" : {
+      "comment" : "Status highlight message for expired sensor"
+    },
+    "Sensor\nExpiring Soon" : {
+      "comment" : "Status highlight message for a sensor nearing expiry"
+    },
+    "Sensor\nNot Detected" : {
+      "comment" : "Status highlight message for a sensor that is not detected"
+    },
+    "Sensor\nWarmup" : {
+      "comment" : "Status highlight message for sensor warmup"
+    },
     "Sensor change" : {
       "localizations" : {
         "ar" : {
@@ -11794,6 +11830,9 @@
           }
         }
       }
+    },
+    "Sensor Expired" : {
+      "comment" : "status expired"
     },
     "Sensor expires in " : {
       "comment" : "Text describing sensor expires in label in settingsview",
@@ -12080,6 +12119,9 @@
         }
       }
     },
+    "Sensor Information" : {
+      "comment" : "Text describing header for sensor information section"
+    },
     "Sensor is expired" : {
       "localizations" : {
         "ar" : {
@@ -12222,6 +12264,12 @@
         }
       }
     },
+    "Sensor Malfunction" : {
+      "comment" : "status malfunction"
+    },
+    "Sensor Not Detected" : {
+      "comment" : "status sensor not activated"
+    },
     "Sensor not found" : {
       "localizations" : {
         "ar" : {
@@ -12363,6 +12411,9 @@
           }
         }
       }
+    },
+    "Sensor OK" : {
+      "comment" : "status ok"
     },
     "Sensor Serial" : {
       "comment" : "Text describing Sensor serial label in settingsview",
@@ -12948,6 +12999,15 @@
           }
         }
       }
+    },
+    "Signal\nLoss" : {
+      "comment" : "Status highlight message for signal loss"
+    },
+    "Signal Loss" : {
+      "comment" : "status signal lost"
+    },
+    "Signal lost. Check that your sensor is nearby and Bluetooth is on." : {
+      "comment" : "msg signal lost"
     },
     "Strength" : {
       "localizations" : {
@@ -14699,6 +14759,24 @@
           }
         }
       }
+    },
+    "Warming Up" : {
+      "comment" : "status warming up"
+    },
+    "Your sensor has expired. Replace it as soon as possible." : {
+      "comment" : "msg expired"
+    },
+    "Your sensor is functioning normally." : {
+      "comment" : "msg ok"
+    },
+    "Your sensor is malfunctioning. Replace it as soon as possible." : {
+      "comment" : "msg malfunction"
+    },
+    "Your sensor is not detected or reports as invalid. If this continues, remove and re-pair it." : {
+      "comment" : "msg sensor not activated"
+    },
+    "Your sensor is warming up." : {
+      "comment" : "msg warming up"
     },
     "Your sensor must be activated and fully warmed up." : {
       "comment" : "Label text for step 1 of libre2 setup",

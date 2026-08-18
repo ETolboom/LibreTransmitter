@@ -1761,6 +1761,30 @@
         }
       }
     },
+    "Sensor Expired" : {
+      "comment" : "Title for sensor expired alert"
+    },
+    "Sensor expired. Replace your sensor now." : {
+      "comment" : "Body for sensor expired alert"
+    },
+    "Sensor Malfunction" : {
+      "comment" : "Title for sensor malfunction alert"
+    },
+    "Sensor malfunction. Replace your sensor now." : {
+      "comment" : "Body for sensor malfunction alert"
+    },
+    "Sensor Not Detected" : {
+      "comment" : "Title for sensor not detected alert"
+    },
+    "Sensor not detected or reporting as invalid. If this continues, remove and re-pair it." : {
+      "comment" : "Body for sensor not detected alert"
+    },
+    "Signal Loss" : {
+      "comment" : "Title for signal loss sensor alert"
+    },
+    "Signal lost. Check that your sensor is nearby and Bluetooth is on." : {
+      "comment" : "Body for signal loss sensor alert"
+    },
     "U" : {
       "comment" : "The short unit display string for international units of insulin",
       "localizations" : {
