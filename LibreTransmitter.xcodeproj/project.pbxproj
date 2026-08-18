@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D6E68AB10AF747BB8A1941F3 /* LibreCGMManagerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C2C10BD0EA4E83BE81F580 /* LibreCGMManagerState.swift */; };
+		3E9EBC7F76A84FFDA055A60D /* LibreSensorLifecycle+Display.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35F953580334AF8B287D85E /* LibreSensorLifecycle+Display.swift */; };
 		D42EC5E068404A889272225A /* LibreSensorLifecycle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AFC6FD1B7BC4094B6402F98 /* LibreSensorLifecycle.swift */; };
 		06F862064B214505ABA15302 /* LibreAlertCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7CEA2FC56B4E108F0B9FAC /* LibreAlertCondition.swift */; };
 		DC0BD5CEC12B4881B6EA4101 /* LibreTransmitterManagerV3+Alerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7021854176DD41F1AA5B4E1F /* LibreTransmitterManagerV3+Alerts.swift */; };
@@ -25,7 +27,6 @@
 		275786AB26753CC400845D0E /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 275786AA26753CC400845D0E /* SettingsView.swift */; };
 		275EC993265AEE970043210E /* NumericTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 275EC992265AEE970043210E /* NumericTextField.swift */; };
 		275EC998265AF64E0043210E /* StatusMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 275EC997265AF64E0043210E /* StatusMessage.swift */; };
-		275EC9AB265EDC280043210E /* GlucoseSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 275EC9AA265EDC280043210E /* GlucoseSettingsView.swift */; };
 		2764E86126FC6DC10016A585 /* Features.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2746C73D26DCF83400E31BD9 /* Features.swift */; };
 		276EF5F22652F84F00571021 /* HashableClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276EF5F12652F84F00571021 /* HashableClass.swift */; };
 		277773A72639EF2B00431547 /* BlueButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 277773A62639EF2B00431547 /* BlueButtonStyle.swift */; };
@@ -192,6 +193,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		D1C2C10BD0EA4E83BE81F580 /* LibreCGMManagerState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibreCGMManagerState.swift; sourceTree = "<group>"; };
+		B35F953580334AF8B287D85E /* LibreSensorLifecycle+Display.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LibreSensorLifecycle+Display.swift"; sourceTree = "<group>"; };
 		2AFC6FD1B7BC4094B6402F98 /* LibreSensorLifecycle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibreSensorLifecycle.swift; sourceTree = "<group>"; };
 		CB7CEA2FC56B4E108F0B9FAC /* LibreAlertCondition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibreAlertCondition.swift; sourceTree = "<group>"; };
 		7021854176DD41F1AA5B4E1F /* LibreTransmitterManagerV3+Alerts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LibreTransmitterManagerV3+Alerts.swift"; sourceTree = "<group>"; };
@@ -207,7 +210,6 @@
 		275786AA26753CC400845D0E /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		275EC992265AEE970043210E /* NumericTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumericTextField.swift; sourceTree = "<group>"; };
 		275EC997265AF64E0043210E /* StatusMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusMessage.swift; sourceTree = "<group>"; };
-		275EC9AA265EDC280043210E /* GlucoseSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlucoseSettingsView.swift; sourceTree = "<group>"; };
 		276EF5F12652F84F00571021 /* HashableClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HashableClass.swift; sourceTree = "<group>"; };
 		277773A62639EF2B00431547 /* BlueButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlueButtonStyle.swift; sourceTree = "<group>"; };
 		277773AB2639EFB800431547 /* ErrorTextFieldStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorTextFieldStyle.swift; sourceTree = "<group>"; };
@@ -509,8 +511,8 @@
 			isa = PBXGroup;
 			children = (
 				275786AA26753CC400845D0E /* SettingsView.swift */,
+				B35F953580334AF8B287D85E /* LibreSensorLifecycle+Display.swift */,
 				2793EBE5260BDE43001A35A3 /* CalibrationEditView.swift */,
-				275EC9AA265EDC280043210E /* GlucoseSettingsView.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -571,6 +573,7 @@
 				C1C318D42A47637100C6F29F /* Mocks */,
 				27ED67B62698EEEF003E5DAB /* Observables */,
 				A8D5D1B79EF34BA3AEC8C642 /* Alerting */,
+				D1C2C10BD0EA4E83BE81F580 /* LibreCGMManagerState.swift */,
 				27850D0B25672CA60020D109 /* ConcreteGlucoseDisplayable.swift */,
 				27850D0C25672CA60020D109 /* LibreGlucose.swift */,
 				B66D1F722E6A813000471149 /* Localizable.xcstrings */,
@@ -918,6 +921,7 @@
 				D42EC5E068404A889272225A /* LibreSensorLifecycle.swift in Sources */,
 				06F862064B214505ABA15302 /* LibreAlertCondition.swift in Sources */,
 				DC0BD5CEC12B4881B6EA4101 /* LibreTransmitterManagerV3+Alerts.swift in Sources */,
+				D6E68AB10AF747BB8A1941F3 /* LibreCGMManagerState.swift in Sources */,
 				27850CF125672C0C0020D109 /* LocalizedString.swift in Sources */,
 				27850D1025672CA60020D109 /* LibreGlucose.swift in Sources */,
 				27850D9E25672F170020D109 /* UUIDContainer.swift in Sources */,
@@ -975,6 +979,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3E9EBC7F76A84FFDA055A60D /* LibreSensorLifecycle+Display.swift in Sources */,
 				2746C74226DD0F8800E31BD9 /* Libre2DirectSetup.swift in Sources */,
 				27ED67BA26990D6B003E5DAB /* GenericObservableObject.swift in Sources */,
 				27850CFE25672C0C0020D109 /* HKUnit.swift in Sources */,
@@ -982,7 +987,6 @@
 				276EF5F22652F84F00571021 /* HashableClass.swift in Sources */,
 				27850CF825672C0C0020D109 /* UserDefaults+Bluetooth.swift in Sources */,
 				275786AB26753CC400845D0E /* SettingsView.swift in Sources */,
-				275EC9AB265EDC280043210E /* GlucoseSettingsView.swift in Sources */,
 				274E71D3297ED77300FCFECD /* AuthView.swift in Sources */,
 				27850CEA25672C0C0020D109 /* TimeIntervalExtensions.swift in Sources */,
 				275EC998265AF64E0043210E /* StatusMessage.swift in Sources */,

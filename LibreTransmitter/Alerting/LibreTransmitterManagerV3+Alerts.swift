@@ -13,7 +13,23 @@ extension LibreTransmitterManagerV3 {
     /// Diffs the currently-firing lifecycle alert conditions against the previous
     /// evaluation and issues/retracts LoopKit Alerts for the delta.
     func evaluateAlerts() {
-        let shouldFire = LibreAlertCondition.currentlyFiring(for: sensorLifecycle)
+        let currentLifecycle = sensorLifecycle
+        let currentIsPaired = isDeviceSelected
+        DispatchQueue.main.async {
+            self.sensorInfoObservable.sensorLifecycle = currentLifecycle
+            self.sensorInfoObservable.isPaired = currentIsPaired
+        }
+
+        let newPersistableState = currentPersistableState
+        if newPersistableState != lastPersistedState {
+            lastPersistedState = newPersistableState
+            let delegate = cgmManagerDelegate
+            delegateQueue.async {
+                delegate?.cgmManagerDidUpdateState(self)
+            }
+        }
+
+        let shouldFire = LibreAlertCondition.currentlyFiring(for: currentLifecycle)
 
         guard shouldFire != firingAlertConditions else {
             return
