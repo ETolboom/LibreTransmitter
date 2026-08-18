@@ -729,6 +729,9 @@
         }
       }
     },
+    "FreeStyle Libre" : {
+      "comment" : "Generic fallback title for the CGM settings screen before a sensor type is known"
+    },
     "g" : {
       "comment" : "The short unit display string for grams",
       "localizations" : {

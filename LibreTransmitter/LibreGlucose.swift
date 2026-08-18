@@ -23,6 +23,7 @@ public struct LibreGlucose: Codable, Hashable {
     public init(unsmoothedGlucose: Double, glucoseDouble: Double, error: [MeasurementError] = [MeasurementError.OK], timestamp: Date) {
         self.unsmoothedGlucose = unsmoothedGlucose
         self.glucoseDouble = glucoseDouble
+        self.error = error
         self.timestamp = timestamp
     }
 

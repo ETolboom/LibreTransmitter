@@ -285,7 +285,9 @@ open class LibreTransmitterManagerV3: CGMManager, LibreTransmitterDelegate {
         currentPersistableState.rawValue
     }
 
-    open var localizedTitle: String { "FreeStyle Libre" }
+    open var localizedTitle: String {
+        transmitterInfoObservable.sensorType.isEmpty ? LocalizedString("FreeStyle Libre", comment: "Generic fallback title for the CGM settings screen before a sensor type is known") : transmitterInfoObservable.sensorType
+    }
 
     public let appURL: URL? = nil // URL(string: "spikeapp://")
 
