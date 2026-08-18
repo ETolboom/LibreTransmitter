@@ -337,7 +337,7 @@ struct SettingsView: View {
     }
     
     private var isConnected: Bool {
-        ["Connected", "Notifying"].contains(transmitterInfo.connectionState)
+        [BluetoothmanagerState.Connected, .Notifying].map(\.rawValue).contains(transmitterInfo.connectionState)
     }
 
     var sensorStatusRow: some View {
