@@ -128,7 +128,7 @@ extension LibreTransmitterManagerV3: CGMManagerUI {
             let state: DeviceStatusHighlightState = remaining < TimeInterval(hours: 24) ? .warning : .normalCGM
             return LibreStatusHighlight(localizedMessage: LocalizedString("Sensor\nExpiring Soon", comment: "Status highlight message for a sensor nearing expiry"), imageName: "clock", state: state)
         case .expired:
-            return LibreStatusHighlight(localizedMessage: LocalizedString("Sensor\nExpired", comment: "Status highlight message for expired sensor"), imageName: "clock", state: .normalCGM)
+            return LibreStatusHighlight(localizedMessage: LocalizedString("Sensor\nExpired", comment: "Status highlight message for expired sensor"), imageName: "clock", state: .critical)
         case .signalLost:
             return LibreStatusHighlight(localizedMessage: LocalizedString("Signal\nLoss", comment: "Status highlight message for signal loss"), imageName: "exclamationmark.circle.fill", state: .warning)
         case .failed:

@@ -32,7 +32,9 @@ extension LibreTransmitterManagerV3 {
             } else {
                 logger.debug("Sensor type was incorrect, and no decryption of sensor was possible")
                 self.lastFault = .encryptedOrUnsupported
-                self.cgmManagerDelegate?.cgmManager(self, hasNew: .error(LibreError.encryptedSensor))
+                self.delegateQueue.async {
+                    self.cgmManagerDelegate?.cgmManager(self, hasNew: .error(LibreError.encryptedSensor))
+                }
                 return
             }
         }
