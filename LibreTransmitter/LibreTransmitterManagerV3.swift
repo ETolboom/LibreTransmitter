@@ -420,6 +420,7 @@ extension LibreTransmitterManagerV3 {
             if let metaData=metaData {
                 self.logger.debug("will set transmitterInfoObservable")
                 self.transmitterInfoObservable.battery = metaData.batteryString
+                self.transmitterInfoObservable.batteryPercent = metaData.battery
                 self.transmitterInfoObservable.hardware = metaData.hardware ?? ""
                 self.transmitterInfoObservable.firmware = metaData.firmware ?? ""
                 self.transmitterInfoObservable.sensorType = metaData.sensorType()?.description ?? "Unknown"
