@@ -352,6 +352,29 @@ struct SettingsView: View {
         }
     }
 
+    // Bridge transmitter (MiaoMiao/Bubble/Blucon, etc) battery is hardware state,
+    // independent of the sensor's own lifecycle. As such its kept as its own row rather than
+    // folded into `LibreSensorStatusDisplay`'s severity, so it can surface
+    // regardless of what the sensor status above is currently showing.
+    private var isBridgeBatteryLow: Bool {
+        guard let percent = transmitterInfo.batteryPercent else { return false }
+        return percent <= 20
+    }
+
+    var bridgeBatteryRow: some View {
+        HStack(alignment: .top, spacing: 10) {
+            Image(systemName: "battery.25")
+                .foregroundStyle(guidanceColors.warning)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(LocalizedString("Bridge battery low", comment: "Title for a warning that the bridge transmitter's battery is low"))
+                    .fontWeight(.heavy)
+                    .foregroundStyle(.primary)
+                Text(LocalizedString("Consider charging your transmitter soon.", comment: "Message for a warning that the bridge transmitter's battery is low"))
+                    .foregroundStyle(.secondary)
+            }
+        }
+    }
+
     var headerSection: some View {
         Section {
             VStack(alignment: .trailing) {
@@ -364,6 +387,9 @@ struct SettingsView: View {
 
             }
             sensorStatusRow
+            if isBridgeBatteryLow {
+                bridgeBatteryRow
+            }
         }
     }
 
