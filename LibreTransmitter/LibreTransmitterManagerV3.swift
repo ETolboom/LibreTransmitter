@@ -531,6 +531,7 @@ extension LibreTransmitterManagerV3 {
                 self.logger.debug("will set glucoseInfoObservable")
                 self.glucoseInfoObservable.glucose = d.quantity
                 self.glucoseInfoObservable.date = d.timestamp
+                self.sensorInfoObservable.activeMeasurementErrors = d.error.filter { $0 != .OK }
             }
 
             if let d = self.latestPrediction {

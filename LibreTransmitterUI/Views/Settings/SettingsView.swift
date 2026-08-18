@@ -341,7 +341,12 @@ struct SettingsView: View {
     }
 
     var sensorStatusRow: some View {
-        let status = LibreSensorStatusDisplay.compute(lifecycle: sensorInfo.sensorLifecycle, isDeviceSelected: sensorInfo.isPaired, isConnected: isConnected)
+        let status = LibreSensorStatusDisplay.compute(
+            lifecycle: sensorInfo.sensorLifecycle,
+            isDeviceSelected: sensorInfo.isPaired,
+            isConnected: isConnected,
+            measurementErrors: sensorInfo.activeMeasurementErrors
+        )
         return HStack(alignment: .top, spacing: 10) {
             Image(systemName: status.iconName)
                 .foregroundStyle(status.iconColor(guidanceColors))

@@ -23,6 +23,11 @@ public class SensorInfo: ObservableObject, Equatable, Hashable {
 
     @Published public var sensorLifecycle: LibreSensorLifecycle = .noSensor
 
+    /// Non-OK error/quality bits from the most recent measurement, decoded straight
+    /// from the sensor's own firmware. Surfaced as "Sensor issues" in the settings UI
+    /// alongside (but independent of) the coarser `sensorLifecycle` state.
+    @Published public var activeMeasurementErrors: [MeasurementError] = []
+
     /// Whether a sensor/device is paired, from persisted UserDefaults state.
     /// Unlike `sensorLifecycle` (which needs at least one live data exchange
     /// to resolve past its default), this is known synchronously at launch -

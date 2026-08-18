@@ -11,6 +11,7 @@
 		3E9EBC7F76A84FFDA055A60D /* LibreSensorLifecycle+Display.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35F953580334AF8B287D85E /* LibreSensorLifecycle+Display.swift */; };
 		D42EC5E068404A889272225A /* LibreSensorLifecycle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AFC6FD1B7BC4094B6402F98 /* LibreSensorLifecycle.swift */; };
 		06F862064B214505ABA15302 /* LibreAlertCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7CEA2FC56B4E108F0B9FAC /* LibreAlertCondition.swift */; };
+		5DD090AA90A3461FFC2CE17C /* MeasurementError+Display.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4B6C1EBA2082D9D5837DDDC /* MeasurementError+Display.swift */; };
 		DC0BD5CEC12B4881B6EA4101 /* LibreTransmitterManagerV3+Alerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7021854176DD41F1AA5B4E1F /* LibreTransmitterManagerV3+Alerts.swift */; };
 		2735A6E029637DEA00D4E868 /* LibreTransmitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 432B0E881CDFC3C50045347B /* LibreTransmitter.framework */; };
 		2735A6E129637DEA00D4E868 /* LibreTransmitter.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 432B0E881CDFC3C50045347B /* LibreTransmitter.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -197,6 +198,7 @@
 		B35F953580334AF8B287D85E /* LibreSensorLifecycle+Display.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LibreSensorLifecycle+Display.swift"; sourceTree = "<group>"; };
 		2AFC6FD1B7BC4094B6402F98 /* LibreSensorLifecycle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibreSensorLifecycle.swift; sourceTree = "<group>"; };
 		CB7CEA2FC56B4E108F0B9FAC /* LibreAlertCondition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibreAlertCondition.swift; sourceTree = "<group>"; };
+		E4B6C1EBA2082D9D5837DDDC /* MeasurementError+Display.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MeasurementError+Display.swift"; sourceTree = "<group>"; };
 		7021854176DD41F1AA5B4E1F /* LibreTransmitterManagerV3+Alerts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LibreTransmitterManagerV3+Alerts.swift"; sourceTree = "<group>"; };
 		2709A6F229E5E0D3004355A3 /* FakeSensorPairingData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeSensorPairingData.swift; sourceTree = "<group>"; };
 		27394068296C2A48001DD18D /* libresensor200.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = libresensor200.png; sourceTree = "<group>"; };
@@ -534,6 +536,7 @@
 				2AFC6FD1B7BC4094B6402F98 /* LibreSensorLifecycle.swift */,
 				CB7CEA2FC56B4E108F0B9FAC /* LibreAlertCondition.swift */,
 				7021854176DD41F1AA5B4E1F /* LibreTransmitterManagerV3+Alerts.swift */,
+				E4B6C1EBA2082D9D5837DDDC /* MeasurementError+Display.swift */,
 			);
 			path = Alerting;
 			sourceTree = "<group>";
@@ -921,6 +924,7 @@
 				D42EC5E068404A889272225A /* LibreSensorLifecycle.swift in Sources */,
 				06F862064B214505ABA15302 /* LibreAlertCondition.swift in Sources */,
 				DC0BD5CEC12B4881B6EA4101 /* LibreTransmitterManagerV3+Alerts.swift in Sources */,
+				5DD090AA90A3461FFC2CE17C /* MeasurementError+Display.swift in Sources */,
 				D6E68AB10AF747BB8A1941F3 /* LibreCGMManagerState.swift in Sources */,
 				27850CF125672C0C0020D109 /* LocalizedString.swift in Sources */,
 				27850D1025672CA60020D109 /* LibreGlucose.swift in Sources */,

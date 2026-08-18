@@ -16,7 +16,7 @@ import LoopKitUI
 /// that distinction only exists once you also know whether there's a live
 /// link right now, which is why this lives one layer above the pure lifecycle
 /// enum. Mirrors SyaiKit's `SyaiSensorStatusDisplay`.
-enum LibreSensorStatusDisplay: Equatable, CaseIterable {
+enum LibreSensorStatusDisplay: Equatable {
     case noSensor
     case connecting
     case ok
@@ -25,6 +25,11 @@ enum LibreSensorStatusDisplay: Equatable, CaseIterable {
     case malfunction
     case notActivated
     case signalLost
+    /// Sensor is otherwise reporting normally, but its most recent measurement carried
+    /// one or more non-fatal firmware error/quality bits (e.g. temperature out of range,
+    /// rate of change too fast). Distinct from - and lower priority than - the lifecycle
+    /// states above, which all take precedence when active.
+    case measurementIssue([MeasurementError])
 
     enum Severity { case neutral, good, warning, critical }
 
@@ -32,7 +37,7 @@ enum LibreSensorStatusDisplay: Equatable, CaseIterable {
         switch self {
         case .connecting, .noSensor, .warmingUp: return .neutral
         case .ok: return .good
-        case .signalLost: return .warning
+        case .signalLost, .measurementIssue: return .warning
         case .expired, .malfunction, .notActivated: return .critical
         }
     }
@@ -45,6 +50,7 @@ enum LibreSensorStatusDisplay: Equatable, CaseIterable {
         case .warmingUp: return "hourglass"
         case .signalLost: return "antenna.radiowaves.left.and.right.slash"
         case .expired, .malfunction, .notActivated: return "exclamationmark.triangle.fill"
+        case .measurementIssue: return "exclamationmark.triangle"
         }
     }
 
@@ -67,6 +73,7 @@ enum LibreSensorStatusDisplay: Equatable, CaseIterable {
         case .malfunction: return Text("Sensor Malfunction", comment: "status malfunction")
         case .notActivated: return Text("Sensor Not Detected", comment: "status sensor not activated")
         case .signalLost: return Text("Signal Loss", comment: "status signal lost")
+        case .measurementIssue: return Text("Sensor Issues", comment: "status measurement issue")
         }
     }
 
@@ -94,6 +101,8 @@ enum LibreSensorStatusDisplay: Equatable, CaseIterable {
                 "Signal lost. Check that your sensor is nearby and Bluetooth is on.",
                 comment: "msg signal lost"
             )
+        case let .measurementIssue(errors):
+            return Text(errors.map(\.localizedDescription).joined(separator: "\n"))
         }
     }
 
@@ -115,7 +124,12 @@ enum LibreSensorStatusDisplay: Equatable, CaseIterable {
     /// reachable. Not-currently-connected wins over a stale lifecycle read
     /// (e.g. `.expired`); without a live link there's no way to be sure the last-known state still holds,
     /// and it resolves itself the moment the link comes back.
-    static func compute(lifecycle: LibreSensorLifecycle, isDeviceSelected: Bool, isConnected: Bool) -> LibreSensorStatusDisplay {
+    static func compute(
+        lifecycle: LibreSensorLifecycle,
+        isDeviceSelected: Bool,
+        isConnected: Bool,
+        measurementErrors: [MeasurementError] = []
+    ) -> LibreSensorStatusDisplay {
         guard isDeviceSelected else {
             return .noSensor
         }
@@ -129,7 +143,8 @@ enum LibreSensorStatusDisplay: Equatable, CaseIterable {
         case .warmup:
             return .warmingUp
         case .active:
-            return .ok
+            let issues = measurementErrors.filter { $0 != .OK }
+            return issues.isEmpty ? .ok : .measurementIssue(issues)
         case .expired:
             return .expired
         case .signalLost:

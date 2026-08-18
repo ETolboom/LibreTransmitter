@@ -12264,6 +12264,9 @@
         }
       }
     },
+    "Sensor Issues" : {
+      "comment" : "status measurement issue"
+    },
     "Sensor Malfunction" : {
       "comment" : "status malfunction"
     },
