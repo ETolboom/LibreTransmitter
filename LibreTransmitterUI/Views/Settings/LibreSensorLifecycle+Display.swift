@@ -99,20 +99,22 @@ enum LibreSensorStatusDisplay: Equatable, CaseIterable {
 
     /// Combines the pairing/data-driven `LibreSensorLifecycle` with a live BLE
     /// connection flag - and, critically, with `isDeviceSelected` checked
-    /// *first* and independently of the lifecycle. `sensorLifecycle` only
-    /// resolves past its `.noSensor` default once at least one full data
-    /// exchange has happened this session (nothing is restored from persisted
-    /// state at launch), so gating on `lifecycle != .noSensor` alone would
-    /// show "No Sensor" for an already-paired sensor for the entire window
-    /// from app launch until the first successful read - collapsing straight
-    /// from "No Sensor" to whatever the resolved state turns out to be, with
-    /// no "Connecting" in between. Checking `isDeviceSelected` first (backed
-    /// by persisted UserDefaults pairing state, available synchronously,
-    /// independent of any BLE data) is what actually makes "Connecting"
+    /// *first* and independently of the lifecycle. `sensorLifecycle` can
+    /// resolve past its `.noSensor` default from persisted state restored at
+    /// launch (`LibreCGMManagerState` via `init(rawState:)`) just as well as
+    /// from a live data exchange this session - but a persisted resolution
+    /// can be stale until a live connection is reestablished, so gating on
+    /// `lifecycle != .noSensor` alone would show whatever the last-known
+    /// state was as if it were current for the entire window from app launch
+    /// until the first successful read - collapsing straight from a
+    /// possibly-stale resolved state to whatever the freshly resolved state
+    /// turns out to be, with no "Connecting" in between. Checking
+    /// `isDeviceSelected` first (backed by persisted UserDefaults pairing
+    /// state, available synchronously, independent of any BLE data) is what
+    /// actually makes "Connecting"
     /// reachable. Not-currently-connected wins over a stale lifecycle read
-    /// (e.g. `.expired`), matching SyaiKit's ordering: without a live link
-    /// there's no way to be sure the last-known state still holds, and it
-    /// resolves itself the moment the link comes back.
+    /// (e.g. `.expired`); without a live link there's no way to be sure the last-known state still holds,
+    /// and it resolves itself the moment the link comes back.
     static func compute(lifecycle: LibreSensorLifecycle, isDeviceSelected: Bool, isConnected: Bool) -> LibreSensorStatusDisplay {
         guard isDeviceSelected else {
             return .noSensor
