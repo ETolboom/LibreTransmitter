@@ -68,6 +68,8 @@ struct SettingsView: View {
     @ObservedObject private var notifyDelete: GenericObservableObject
     @ObservedObject private var notifyReset: GenericObservableObject
     @ObservedObject private var notifyReconnect: GenericObservableObject
+    @ObservedObject private var notifyShowDeviceDetails: GenericObservableObject
+    @ObservedObject private var notifyShowCalibrations: GenericObservableObject
 
     @State private var presentableStatus: StatusMessage?
 
@@ -86,6 +88,8 @@ struct SettingsView: View {
         notifyDelete: GenericObservableObject,
         notifyReset: GenericObservableObject,
         notifyReconnect: GenericObservableObject,
+        notifyShowDeviceDetails: GenericObservableObject,
+        notifyShowCalibrations: GenericObservableObject,
         pairingService: SensorPairingProtocol,
         bluetoothSearcher: BluetoothSearcher)
     {
@@ -96,15 +100,14 @@ struct SettingsView: View {
         self.notifyDelete = notifyDelete
         self.notifyReset = notifyReset
         self.notifyReconnect = notifyReconnect
+        self.notifyShowDeviceDetails = notifyShowDeviceDetails
+        self.notifyShowCalibrations = notifyShowCalibrations
         self.pairingService = pairingService
         self.bluetoothSearcher = bluetoothSearcher
     }
 
     static let formatter = NumberFormatter()
 
-    // no navigationview necessary when running inside a uihostingcontroller
-    // uihostingcontroller seems to add a navigationview for us, causing problems if we
-    // also add one herer
     var body: some View {
             List {
                 headerSection
@@ -112,8 +115,8 @@ struct SettingsView: View {
 
                 sensorInfoSection
 
-                NavigationLink(destination: deviceInfoSection) {
-                    SettingsItem(title: "Device details")
+                disclosureButton(title: "Device details") {
+                    notifyShowDeviceDetails.notify()
                 }
 
                 manageSection
@@ -125,6 +128,22 @@ struct SettingsView: View {
                     doneButton
                 }
             }
+    }
+
+    /// A List row that looks like a NavigationLink (label + disclosure chevron) but triggers
+    /// a plain action instead, for rows whose destination is pushed manually in UIKit.
+    func disclosureButton(title: String, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            HStack {
+                SettingsItem(title: title)
+                Spacer()
+                Image(systemName: "chevron.right")
+                    .font(.caption.weight(.semibold))
+                    .foregroundColor(Color(UIColor.tertiaryLabel))
+            }
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
     }
 
     var measurementSection : some View {
@@ -144,40 +163,6 @@ struct SettingsView: View {
         }
     }
 
-    var deviceInfoSection: some View {
-        List {
-            Section(header: Text(LocalizedString("Device Info", comment: "Text describing header for device info section"))) {
-                if !transmitterInfo.battery.isEmpty {
-                    SettingsItem(title: "Battery", detail: $transmitterInfo.battery )
-                }
-                
-                // The firmware version is not always extractable for all devices
-                // and the libre2 direct version does not support it at all
-                if !transmitterInfo.hardware.isEmpty {
-                    SettingsItem(title: "Hardware", detail: $transmitterInfo.hardware )
-                }
-                // The firmware version is not always extractable for all devices
-                // and the libre2 direct version does not support it at all
-                if !transmitterInfo.firmware.isEmpty {
-                    SettingsItem(title: "Firmware", detail: $transmitterInfo.firmware )
-                }
-                
-                SettingsItem(title: "Connection State", detail: $transmitterInfo.connectionState )
-                SettingsItem(title: "Transmitter Type", detail: $transmitterInfo.transmitterType )
-                
-                // The mac address of a given device is normally not available on ios
-                // Only the bluetooth identifier, which is a normalized derivative of the mac address is available
-                // However, some transmitters, such as the bubble, provide their own mac address as part of its advertisement info
-                // which we extract and put herer
-                if !transmitterInfo.transmitterMacAddress.isEmpty {
-                    SettingsItem(title: "Mac", detail: $transmitterInfo.transmitterMacAddress )
-                }
-            }
-        }
-        .textSelection(.enabled)
-        .navigationTitle(LocalizedString("Device Info", comment: "Text describing header for device info section"))
-    }
-
     var sensorInfoSection: some View {
         Section(header: Text(LocalizedString("Sensor Information", comment: "Text describing header for sensor information section"))) {
             SettingsItem(title: "Sensor Type", detail: $transmitterInfo.sensorType )
@@ -195,10 +180,8 @@ struct SettingsView: View {
     
     var manageSection: some View {
         Section(header: Text(LocalizedString("Manage", comment: "Text describing header for manage section"))) {
-            NavigationLink(destination: CalibrationEditView()) {
-                Button(Features.allowsEditingFactoryCalibrationData ? "Edit calibrations" : "View factory calibrations") {
-                    print("edit calibration clicked")
-                }
+            disclosureButton(title: Features.allowsEditingFactoryCalibrationData ? "Edit calibrations" : "View factory calibrations") {
+                notifyShowCalibrations.notify()
             }
 
             NavigationLink(destination: AuthView(completeNotifier: notifyComplete, notifyReset: notifyReset, notifyReconnect: notifyReconnect, pairingService: pairingService, bluetoothSearcher: bluetoothSearcher)) {
@@ -392,4 +375,44 @@ struct SettingsView: View {
         }
     }
 
+}
+
+/// Pushed manually as its own hosting controller (see
+/// LibreTransmitterManagerV3.settingsViewController) rather than via NavigationLink, so its
+/// navigationItem.title can be set directly in UIKit - see the comment on SettingsView.body.
+struct DeviceInfoView: View {
+    @ObservedObject var transmitterInfo: LibreTransmitter.TransmitterInfo
+
+    var body: some View {
+        List {
+            Section(header: Text(LocalizedString("Device Info", comment: "Text describing header for device info section"))) {
+                if !transmitterInfo.battery.isEmpty {
+                    SettingsItem(title: "Battery", detail: $transmitterInfo.battery )
+                }
+
+                // The firmware version is not always extractable for all devices
+                // and the libre2 direct version does not support it at all
+                if !transmitterInfo.hardware.isEmpty {
+                    SettingsItem(title: "Hardware", detail: $transmitterInfo.hardware )
+                }
+                // The firmware version is not always extractable for all devices
+                // and the libre2 direct version does not support it at all
+                if !transmitterInfo.firmware.isEmpty {
+                    SettingsItem(title: "Firmware", detail: $transmitterInfo.firmware )
+                }
+
+                SettingsItem(title: "Connection State", detail: $transmitterInfo.connectionState )
+                SettingsItem(title: "Transmitter Type", detail: $transmitterInfo.transmitterType )
+
+                // The mac address of a given device is normally not available on ios
+                // Only the bluetooth identifier, which is a normalized derivative of the mac address is available
+                // However, some transmitters, such as the bubble, provide their own mac address as part of its advertisement info
+                // which we extract and put herer
+                if !transmitterInfo.transmitterMacAddress.isEmpty {
+                    SettingsItem(title: "Mac", detail: $transmitterInfo.transmitterMacAddress )
+                }
+            }
+        }
+        .textSelection(.enabled)
+    }
 }

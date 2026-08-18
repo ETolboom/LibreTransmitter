@@ -52,10 +52,13 @@ extension LibreTransmitterManagerV3: CGMManagerUI {
 
         let doneNotifier = GenericObservableObject()
         let wantToTerminateNotifier = GenericObservableObject()
-        
+
         let wantToResetCGMManagerNotifier = GenericObservableObject()
-        
+
         let wantToRestablishConnectionNotifier = GenericObservableObject()
+
+        let wantToShowDeviceDetailsNotifier = GenericObservableObject()
+        let wantToShowCalibrationsNotifier = GenericObservableObject()
 
         let settingsView = SettingsView(
             transmitterInfo: self.transmitterInfoObservable,
@@ -65,20 +68,43 @@ extension LibreTransmitterManagerV3: CGMManagerUI {
             notifyDelete: wantToTerminateNotifier,
             notifyReset: wantToResetCGMManagerNotifier,
             notifyReconnect:wantToRestablishConnectionNotifier,
+            notifyShowDeviceDetails: wantToShowDeviceDetailsNotifier,
+            notifyShowCalibrations: wantToShowCalibrationsNotifier,
             pairingService: self.pairingService,
             bluetoothSearcher: self.bluetoothSearcher
         )
 
+        // SettingsView has no NavigationStack/NavigationView, so SwiftUI's own .navigationTitle
+        // has nothing to propagate through - neither DismissibleHostingController nor
+        // CGMManagerSettingsNavigationViewController bridge that preference into UIKit's
+        // navigationItem.title. Titles for this screen and everything it pushes are set
+        // directly on navigationItem below instead (matching SyaiKit's SyaiUIController).
         let hostedView = DismissibleHostingController(
             content: settingsView
-                .navigationTitle(self.localizedTitle)
                 .environmentObject(displayGlucosePreference)
         )
+        hostedView.navigationItem.title = self.localizedTitle
+        hostedView.navigationItem.largeTitleDisplayMode = .always
 
         let nav = CGMManagerSettingsNavigationViewController(rootViewController: hostedView)
-        nav.navigationItem.largeTitleDisplayMode = .always
         nav.navigationBar.prefersLargeTitles = true
-        
+
+        wantToShowDeviceDetailsNotifier.listen { [weak self, weak nav] in
+            guard let self, let nav else { return }
+            let detailHost = DismissibleHostingController(content: DeviceInfoView(transmitterInfo: self.transmitterInfoObservable))
+            detailHost.navigationItem.title = LocalizedString("Device Info", comment: "Text describing header for device info section")
+            nav.pushViewController(detailHost, animated: true)
+        }
+
+        wantToShowCalibrationsNotifier.listen { [weak nav] in
+            guard let nav else { return }
+            let calibrationHost = DismissibleHostingController(content: CalibrationEditView())
+            calibrationHost.navigationItem.title = Features.allowsEditingFactoryCalibrationData
+                ? LocalizedString("Calibration Edit", comment: "Title for calibration edit screen")
+                : LocalizedString("Calibration Details", comment: "Title for calibration details screen")
+            nav.pushViewController(calibrationHost, animated: true)
+        }
+
         wantToResetCGMManagerNotifier.listenOnce { [weak self] in
             self?.logger.debug("CGM wants to reset cgmmanager")
             self?.resetManager()

@@ -2,6 +2,7 @@
   "sourceLanguage" : "en",
   "strings" : {
     "" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -411,6 +412,7 @@
       }
     },
     "%lld%%" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -696,6 +698,7 @@
       }
     },
     "Active from - to " : {
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -839,6 +842,7 @@
     },
     "Additional notification types" : {
       "comment" : "Text describing heading for additional notification types for third party transmitters",
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -982,6 +986,7 @@
     },
     "Adds a lot of data to the Issue Report " : {
       "comment" : "Text informing user of potentially large reports",
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -1124,6 +1129,7 @@
       }
     },
     "Adds Transmitter Battery" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -1266,6 +1272,7 @@
       }
     },
     "Alarm Settings" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -1409,6 +1416,7 @@
     },
     "Always Notify Glucose" : {
       "comment" : "Text describing always notify glucose option in notificationsettingsview",
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -2136,6 +2144,7 @@
       }
     },
     "Backfill from history" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -2279,6 +2288,7 @@
     },
     "Backfill options" : {
       "comment" : "Text describing header for backfill options in glucosesettingsview",
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -2567,6 +2577,7 @@
       "comment" : "Title for a warning that the bridge transmitter's battery is low"
     },
     "Calibration Details" : {
+      "comment" : "Title for calibration details screen",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -2709,6 +2720,7 @@
       }
     },
     "Calibration Edit" : {
+      "comment" : "Title for calibration edit screen",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -3013,6 +3025,7 @@
     },
     "Click to Snooze Alerts" : {
       "comment" : "Text describing click to snooze label in snoozeview",
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -3156,6 +3169,7 @@
     },
     "Configuration" : {
       "comment" : "Text describing header for advanced settings section",
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -3597,6 +3611,7 @@
       }
     },
     "Critical alarm volume" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -3739,6 +3754,7 @@
       }
     },
     "Critical alarms will always be sent with volume at minimum 60%" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -4324,6 +4340,7 @@
     },
     "Debug options" : {
       "comment" : "Text describing header for debug options in glucosesettingsview",
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -5323,6 +5340,7 @@
       }
     },
     "Edit calibrations" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -6066,6 +6084,7 @@
     },
     "Glucose Notification visibility" : {
       "comment" : "Text describing header for notification visibility in notificationsettingsview",
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -6208,6 +6227,7 @@
       }
     },
     "Glucose Settings" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -6493,6 +6513,7 @@
     },
     "High" : {
       "comment" : "Text describing High glucose label in alarmsettingsview",
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -6921,6 +6942,7 @@
       }
     },
     "Invalid sensor" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -7934,6 +7956,7 @@
     },
     "Low" : {
       "comment" : "Text describing Low glucose label in alarmsettingsview",
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -8076,6 +8099,7 @@
       }
     },
     "Low battery" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -9079,6 +9103,7 @@
     },
     "No Connection: " : {
       "comment" : "Text describing no connection label in settingsview",
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -9224,6 +9249,7 @@
       "comment" : "status no sensor"
     },
     "Notification" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -9367,6 +9393,7 @@
     },
     "Notify per reading" : {
       "comment" : "Text describing option for letting user choose notifying for every reading, every second reading etc",
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -10111,6 +10138,7 @@
     },
     "Pause Glucose alarms" : {
       "comment" : "Text for pausing glucose alarms",
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -10253,6 +10281,7 @@
       }
     },
     "Persist sensordata" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -10682,6 +10711,7 @@
     },
     "Remote data storage" : {
       "comment" : "Text describing header for remote data storage",
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -10827,6 +10857,7 @@
       "comment" : "Status highlight message for a failed sensor"
     },
     "Replace sensor immediately to continue receving glucose values" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -11107,6 +11138,7 @@
     },
     "Schedule " : {
       "comment" : "Text describing schedule in alarmsettingsview",
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -11547,6 +11579,7 @@
       "comment" : "Status highlight message for sensor warmup"
     },
     "Sensor change" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -11835,6 +11868,7 @@
       }
     },
     "Sensor expires soon" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -11980,6 +12014,7 @@
       "comment" : "Text describing header for sensor information section"
     },
     "Sensor is expired" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -12131,6 +12166,7 @@
       "comment" : "status sensor not activated"
     },
     "Sensor not found" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -12277,6 +12313,7 @@
     },
     "Sensor Serial" : {
       "comment" : "Text describing Sensor serial label in settingsview",
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -12563,6 +12600,7 @@
     },
     "Sensor State" : {
       "comment" : "Text describing Sensor state label in settingsview",
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -12870,6 +12908,7 @@
       "comment" : "msg signal lost"
     },
     "Strength" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -13299,6 +13338,7 @@
     },
     "To " : {
       "comment" : "Very short text describing separation between start and end datetimes",
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -13740,6 +13780,7 @@
       }
     },
     "Upload to remote data service" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -14337,6 +14378,7 @@
       }
     },
     "Value" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
@@ -14479,6 +14521,7 @@
       }
     },
     "View factory calibrations" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {
