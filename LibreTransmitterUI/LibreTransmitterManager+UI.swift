@@ -117,16 +117,8 @@ extension LibreTransmitterManagerV3: CGMManagerUI {
         switch sensorLifecycle {
         case .warmup:
             return LibreStatusHighlight(localizedMessage: LocalizedString("Sensor\nWarmup", comment: "Status highlight message for sensor warmup"), imageName: "clock", state: .normalCGM)
-        case let .active(remaining, _):
-            // Matches cgmLifecycleProgress's own visibility/severity thresholds
-            // (see there for why 48h/24h): give the user a heads-up banner well
-            // before the progress bar turns warning-colored, so there's time to
-            // order a replacement before it becomes urgent.
-            guard remaining < TimeInterval(hours: 48) else {
-                return nil
-            }
-            let state: DeviceStatusHighlightState = remaining < TimeInterval(hours: 24) ? .warning : .normalCGM
-            return LibreStatusHighlight(localizedMessage: LocalizedString("Sensor\nExpiring Soon", comment: "Status highlight message for a sensor nearing expiry"), imageName: "clock", state: state)
+        case .active:
+            return nil
         case .expired:
             return LibreStatusHighlight(localizedMessage: LocalizedString("Sensor\nExpired", comment: "Status highlight message for expired sensor"), imageName: "clock", state: .critical)
         case .signalLost:
