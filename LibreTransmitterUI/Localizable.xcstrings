@@ -11569,9 +11569,6 @@
     "Sensor\nExpired" : {
       "comment" : "Status highlight message for expired sensor"
     },
-    "Sensor\nExpiring Soon" : {
-      "comment" : "Status highlight message for a sensor nearing expiry"
-    },
     "Sensor\nNot Detected" : {
       "comment" : "Status highlight message for a sensor that is not detected"
     },
